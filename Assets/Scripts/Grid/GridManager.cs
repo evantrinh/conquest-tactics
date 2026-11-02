@@ -2,14 +2,21 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour, IGrid
 {
+    public static GridManager Instance { get; private set; }
+
     public LevelData level;
     public TileSet tileSet;
     public float heightStep = 0.5f;
+
+    // World-space box around the finished board. The camera uses it to frame the level.
+    public Bounds BoardBounds { get; private set; }
 
     const string ContainerName = "GeneratedTiles";
 
     public int Width => level.width;
     public int Depth => level.depth;
+
+    void Awake() { Instance = this; }
 
     void Start()
     {
@@ -39,21 +46,32 @@ public class GridManager : MonoBehaviour, IGrid
         if (!Application.isPlaying) container.hideFlags = HideFlags.DontSave;
 
         var block = new MaterialPropertyBlock();
+        int maxHeight = 0;
 
         for (int y = 0; y < level.depth; y++)
         for (int x = 0; x < level.width; x++)
         {
             var type = level.tileTypes[level.Index(x, y)];
-            float top = (level.tileHeights[level.Index(x, y)] + 1) * heightStep;
+            int h = level.tileHeights[level.Index(x, y)];
+            maxHeight = Mathf.Max(maxHeight, h);
+            float top = (h + 1) * heightStep;
 
             var tile = Instantiate(tileSet.GetPrefab(type), container.transform);
             tile.name = "Tile_" + x + "_" + y + "_" + type;
             tile.transform.localScale = new Vector3(1, top, 1);
             tile.transform.localPosition = new Vector3(x, top / 2f, y);
+            tile.AddComponent<TileCoord>().pos = new Vector2Int(x, y);
 
             var entry = tileSet.GetEntry(type);
             if (entry != null && entry.tint) Tint(tile, entry.color, block);
         }
+
+        float maxTop = (maxHeight + 1) * heightStep;
+        BoardBounds = new Bounds(
+            transform.position + new Vector3((level.width - 1) / 2f, maxTop / 2f, (level.depth - 1) / 2f),
+            new Vector3(level.width, maxTop, level.depth));
+
+        GameEvents.OnLevelBuilt?.Invoke(BoardBounds);
     }
 
     // Colours a tile without creating a new material for each one
@@ -86,6 +104,7 @@ public class GridManager : MonoBehaviour, IGrid
         return t != TileType.Water && t != TileType.Wall;
     }
 
+    // The point on the top surface of a tile
     public Vector3 TileToWorld(Vector2Int p) =>
         transform.position + new Vector3(p.x, (GetHeight(p) + 1) * heightStep, p.y);
 
