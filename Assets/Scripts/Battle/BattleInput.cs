@@ -116,20 +116,7 @@ public class BattleInput : MonoBehaviour
         state = State.Moving;
         if (TileOverlay.Instance != null) TileOverlay.Instance.Clear();
 
-        var grid = GridManager.Instance;
-        // Keep the unit's own vertical offset since a capsule sits higher than a flat model
-        float yOffset = unit.transform.position.y - grid.TileToWorld(unit.gridPos).y;
-        Vector3 from = unit.transform.position;
-        Vector3 to = grid.TileToWorld(target) + Vector3.up * yOffset;
-
-        // A straight slide for now. Walking along the path comes later.
-        for (float t = 0f; t < moveDuration; t += Time.deltaTime)
-        {
-            unit.transform.position = Vector3.Lerp(from, to, t / moveDuration);
-            yield return null;
-        }
-        unit.transform.position = to;
-        unit.gridPos = target;
+        yield return UnitMotion.Slide(unit, target, moveDuration);
 
         BattleManager.Instance.MarkMoved(unit);
         GameEvents.OnUnitMoved?.Invoke(unit, target);
@@ -142,25 +129,8 @@ public class BattleInput : MonoBehaviour
         state = State.Moving;
         if (TileOverlay.Instance != null) TileOverlay.Instance.Clear();
 
-        Vector3 from = attacker.transform.position;
-        Vector3 dir = target.transform.position - from;
-        dir.y = 0f;
-        Vector3 peak = from + dir.normalized * lungeDistance;
-        float half = lungeDuration * 0.5f;
-
-        for (float t = 0f; t < half; t += Time.deltaTime)
-        {
-            attacker.transform.position = Vector3.Lerp(from, peak, t / half);
-            yield return null;
-        }
-        attacker.transform.position = peak;
-        BattleManager.Instance.Attack(attacker, target);
-        for (float t = 0f; t < half; t += Time.deltaTime)
-        {
-            attacker.transform.position = Vector3.Lerp(peak, from, t / half);
-            yield return null;
-        }
-        attacker.transform.position = from;
+        yield return UnitMotion.Lunge(attacker, target, lungeDuration, lungeDistance,
+            () => BattleManager.Instance.Attack(attacker, target));
 
         Finish(attacker);
     }

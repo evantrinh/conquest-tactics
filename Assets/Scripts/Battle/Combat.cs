@@ -8,12 +8,16 @@ public static class Combat
     public const int MaxHeightBonus = 2;
 
     // Tiles the unit can hit from where it stands
-    public static List<Vector2Int> AttackTiles(IGrid grid, Unit unit)
+    public static List<Vector2Int> AttackTiles(IGrid grid, Unit unit) =>
+        AttackTiles(grid, unit, unit.gridPos);
+
+    // Tiles the unit could hit if it stood on the origin tile
+    public static List<Vector2Int> AttackTiles(IGrid grid, Unit unit, Vector2Int origin)
     {
         var tiles = new List<Vector2Int>();
         foreach (var o in UnitStats.AttackOffsets(unit))
         {
-            var p = unit.gridPos + o;
+            var p = origin + o;
             if (grid.InBounds(p)) tiles.Add(p);
         }
         return tiles;
@@ -22,9 +26,12 @@ public static class Combat
     public static bool InAttackRange(IGrid grid, Unit attacker, Vector2Int target) =>
         AttackTiles(grid, attacker).Contains(target);
 
-    public static int Damage(IGrid grid, Unit attacker, Unit target)
+    public static int Damage(IGrid grid, Unit attacker, Unit target) =>
+        Damage(grid, attacker, attacker.gridPos, target);
+
+    public static int Damage(IGrid grid, Unit attacker, Vector2Int from, Unit target)
     {
-        int diff = grid.GetHeight(attacker.gridPos) - grid.GetHeight(target.gridPos);
+        int diff = grid.GetHeight(from) - grid.GetHeight(target.gridPos);
         int bonus = Mathf.Clamp(diff * BonusPerLevel, 0, MaxHeightBonus);
         return UnitStats.Attack(attacker) + bonus;
     }
