@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 677714467}
   - component: {fileID: 677714472}
   - component: {fileID: 677714471}
+  - component: {fileID: 677714473}
   m_Layer: 0
   m_Name: BattleSystems
   m_TagString: Untagged
@@ -496,6 +497,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleInput
   moveDuration: 0.35
+  lungeDuration: 0.25
+  lungeDistance: 0.4
 --- !u!114 &677714471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,6 +525,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SelectionCameraFocus
   zoom: 0.65
+--- !u!114 &677714473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677714465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c72092669ee55a418d7a9f6e07ebccd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackFeedback
+  flashTime: 0.15
+  numberTime: 0.8
+  numberRise: 1
 --- !u!1 &1372748105
 GameObject:
   m_ObjectHideFlags: 0
