@@ -11,12 +11,9 @@ public static class Combat
     public static List<Vector2Int> AttackTiles(IGrid grid, Unit unit)
     {
         var tiles = new List<Vector2Int>();
-        int r = UnitStats.AttackRange(unit);
-        for (int dx = -r; dx <= r; dx++)
-        for (int dy = -r; dy <= r; dy++)
+        foreach (var o in UnitStats.AttackOffsets(unit))
         {
-            if (Mathf.Abs(dx) + Mathf.Abs(dy) > r || (dx == 0 && dy == 0)) continue;
-            var p = unit.gridPos + new Vector2Int(dx, dy);
+            var p = unit.gridPos + o;
             if (grid.InBounds(p)) tiles.Add(p);
         }
         return tiles;
