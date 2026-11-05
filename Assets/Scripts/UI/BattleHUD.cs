@@ -81,11 +81,12 @@ public class BattleHUD : MonoBehaviour
             GUILayout.Label("HP  " + selected.currentHP + " / " + UnitStats.MaxHP(selected));
             GUILayout.Label("Attack " + UnitStats.Attack(selected) + "   Move " + UnitStats.MoveRange(selected) +
                 "   Range " + UnitStats.AttackRange(selected));
-            if (battle != null)
+            bool ours = selected.team == Team.Player;
+            if (battle != null && ours)
                 GUILayout.Label((battle.HasMoved(selected) ? "Moved" : "Can move") + "   " +
                     (battle.HasActed(selected) ? "Acted" : "Can act"));
-            GUI.enabled = battle != null && battle.CurrentTeam == Team.Player && !busy && !battle.LevelOver;
-            if (GUILayout.Button("Wait")) BattleInput.Instance.WaitSelected();
+            GUI.enabled = ours && battle != null && battle.CurrentTeam == Team.Player && !busy && !battle.LevelOver;
+            if (ours && GUILayout.Button("Wait")) BattleInput.Instance.WaitSelected();
             GUI.enabled = true;
             GUILayout.EndArea();
         }
