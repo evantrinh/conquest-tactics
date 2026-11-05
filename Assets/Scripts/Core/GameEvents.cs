@@ -16,4 +16,5 @@ public static class GameEvents
     public static Action<Unit, Unit, int> OnUnitAttacked;   // attacker, target, damage
     public static Action<Unit> OnUnitKilled;
     public static Action<Unit> OnUnitWaited;
+    public static Action<int, int> OnActionPointsChanged;   // remaining, max
 }

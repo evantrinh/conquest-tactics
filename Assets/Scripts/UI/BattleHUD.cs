@@ -59,7 +59,9 @@ public class BattleHUD : MonoBehaviour
 
         string who = result != null ? result : battle == null ? "" : (battle.CurrentTeam == Team.Player ? "Your turn" : "Enemy turn");
         string turn = battle == null ? "" : "   (turn " + battle.TurnNumber + ")";
-        GUILayout.Label(who + turn, GUILayout.Width(260));
+        string ap = battle == null || battle.CurrentTeam != Team.Player ? "" :
+            "   AP " + battle.Points.Remaining + " / " + battle.Points.Max;
+        GUILayout.Label(who + turn + ap, GUILayout.Width(260));
         GUILayout.FlexibleSpace();
 
         bool busy = BattleInput.Instance != null && BattleInput.Instance.IsMoving;
@@ -83,8 +85,12 @@ public class BattleHUD : MonoBehaviour
                 "   Range " + UnitStats.AttackRange(selected));
             bool ours = selected.team == Team.Player;
             if (battle != null && ours)
-                GUILayout.Label((battle.HasMoved(selected) ? "Moved" : "Can move") + "   " +
-                    (battle.HasActed(selected) ? "Acted" : "Can act"));
+            {
+                int moveCost = battle.MoveCost(selected);
+                string move = !battle.CanMove(selected) ? "No move" : "Move " + (moveCost == 0 ? "free" : moveCost + " AP");
+                string act = !battle.CanAct(selected) ? "No action" : "Attack " + battle.ActionCost(selected) + " AP";
+                GUILayout.Label(move + "   " + act);
+            }
             GUI.enabled = ours && battle != null && battle.CurrentTeam == Team.Player && !busy && !battle.LevelOver;
             if (ours && GUILayout.Button("Wait")) BattleInput.Instance.WaitSelected();
             GUI.enabled = true;

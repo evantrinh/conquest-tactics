@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Keeps the list of units and whose turn it is. Barebones on purpose:
-// the enemy turn is skipped until enemy AI exists.
+// Keeps the list of units, whose turn it is, and what each player unit has used this turn.
+// Each unit gets any number of moves and one action. Moves and actions spend the shared action points.
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
@@ -16,14 +16,22 @@ public class BattleManager : MonoBehaviour
     public float enemyTurnDelay = 1f;
 
     readonly List<Unit> units = new List<Unit>();
-    readonly HashSet<Unit> moved = new HashSet<Unit>();
+    readonly Dictionary<Unit, int> moves = new Dictionary<Unit, int>();
     readonly HashSet<Unit> acted = new HashSet<Unit>();
+    readonly HashSet<Unit> waited = new HashSet<Unit>();
 
     public bool LevelOver { get; private set; }
 
     public IReadOnlyList<Unit> Units => units;
 
-    void Awake() { Instance = this; }
+    public ActionPoints Points { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+        Points = GetComponent<ActionPoints>();
+        if (Points == null) Points = gameObject.AddComponent<ActionPoints>();
+    }
     void OnEnable() { GameEvents.OnUnitSpawned += Register; }
     void OnDisable() { GameEvents.OnUnitSpawned -= Register; }
     void Start() { GameEvents.OnTurnChanged?.Invoke(CurrentTeam); }
@@ -48,29 +56,45 @@ public class BattleManager : MonoBehaviour
         return set;
     }
 
-    public bool HasMoved(Unit unit) => moved.Contains(unit);
-
+    public bool HasMoved(Unit unit) => moves.ContainsKey(unit);
     public bool HasActed(Unit unit) => acted.Contains(unit);
-    public bool CanMove(Unit unit) => !LevelOver && !moved.Contains(unit);
-    public bool CanAct(Unit unit) => !LevelOver && !acted.Contains(unit);
+
+    // Only the player team spends action points
+    public int MoveCost(Unit unit)
+    {
+        if (unit.team != Team.Player) return 0;
+        return HasMoved(unit) ? Points.Rules.extraMoveCost : Points.Rules.firstMoveCost;
+    }
+
+    public int ActionCost(Unit unit) => unit.team == Team.Player ? Points.Rules.actionCost : 0;
+
+    public bool CanMove(Unit unit) =>
+        !LevelOver && !waited.Contains(unit) && (MoveCost(unit) == 0 || Points.CanSpend(MoveCost(unit)));
+
+    public bool CanAct(Unit unit) =>
+        !LevelOver && !waited.Contains(unit) && !acted.Contains(unit) &&
+        (ActionCost(unit) == 0 || Points.CanSpend(ActionCost(unit)));
 
     public bool CanSelect(Unit unit) =>
         unit != null && unit.team == CurrentTeam && CurrentTeam == Team.Player &&
         (CanMove(unit) || CanAct(unit));
 
-    public void MarkMoved(Unit unit) { moved.Add(unit); }
-    public void MarkActed(Unit unit) { acted.Add(unit); }
+    public void MarkMoved(Unit unit)
+    {
+        Points.Spend(MoveCost(unit));
+        moves[unit] = moves.TryGetValue(unit, out var n) ? n + 1 : 1;
+    }
 
     public void Wait(Unit unit)
     {
-        moved.Add(unit);
-        acted.Add(unit);
+        waited.Add(unit);
         GameEvents.OnUnitWaited?.Invoke(unit);
     }
 
     public void Attack(Unit attacker, Unit target)
     {
         int damage = Combat.Damage(GridManager.Instance, attacker, target);
+        Points.Spend(ActionCost(attacker));
         acted.Add(attacker);
         GameEvents.OnUnitAttacked?.Invoke(attacker, target, damage);
         target.currentHP -= damage;
@@ -107,8 +131,10 @@ public class BattleManager : MonoBehaviour
     public void EndTurn()
     {
         if (LevelOver) return;
-        moved.Clear();
+        moves.Clear();
         acted.Clear();
+        waited.Clear();
+        Points.Refill();
         if (CurrentTeam == Team.Player) CurrentTeam = Team.Enemy;
         else { CurrentTeam = Team.Player; TurnNumber++; }
 
