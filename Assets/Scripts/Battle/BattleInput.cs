@@ -10,6 +10,10 @@ public class BattleInput : MonoBehaviour
 
     public float moveDuration = 0.35f;
     public bool IsMoving => state == State.Moving;
+    public Unit Selected => selected;
+
+    public float lungeDuration = 0.25f;
+    public float lungeDistance = 0.4f;
 
     enum State { Idle, Selected, Moving }
     State state = State.Idle;
@@ -45,13 +49,19 @@ public class BattleInput : MonoBehaviour
         var unit = hit.collider.GetComponentInParent<Unit>();
         if (unit != null)
         {
+            if (state == State.Selected && unit.team != selected.team)
+            {
+                if (battle.CanAct(selected) && Combat.InAttackRange(grid, selected, unit.gridPos))
+                    StartCoroutine(AttackRoutine(selected, unit));
+                return;
+            }
             if (unit == selected) Deselect();
             else if (battle.CanSelect(unit)) Select(unit);
             return;
         }
 
         var tile = hit.collider.GetComponentInParent<TileCoord>();
-        if (tile != null && state == State.Selected &&
+        if (tile != null && state == State.Selected && battle.CanMove(selected) &&
             reachable.ContainsKey(tile.pos) && tile.pos != selected.gridPos)
             StartCoroutine(MoveRoutine(selected, tile.pos));
         else
@@ -66,25 +76,29 @@ public class BattleInput : MonoBehaviour
 
         // Tiles the unit can walk to. Other units block the way.
         var blocked = BattleManager.Instance.OccupiedTiles(unit);
-        reachable = MovementRange.GetReachable(grid, unit.gridPos, unit.data.moveRange, blocked);
+        reachable = BattleManager.Instance.CanMove(unit)
+            ? MovementRange.GetReachable(grid, unit.gridPos, UnitStats.MoveRange(unit), blocked)
+            : new Dictionary<Vector2Int, int>();
 
         var moveTiles = new List<Vector2Int>();
         foreach (var kv in reachable)
             if (kv.Key != unit.gridPos) moveTiles.Add(kv.Key);
 
-        // Attack range is a diamond around the unit's current tile (display only for now)
-        var attackTiles = new List<Vector2Int>();
-        int r = unit.data.attackRange;
-        for (int dx = -r; dx <= r; dx++)
-        for (int dy = -r; dy <= r; dy++)
-        {
-            if (Mathf.Abs(dx) + Mathf.Abs(dy) > r || (dx == 0 && dy == 0)) continue;
-            var p = unit.gridPos + new Vector2Int(dx, dy);
-            if (grid.InBounds(p)) attackTiles.Add(p);
-        }
+        var attackTiles = BattleManager.Instance.CanAct(unit)
+            ? Combat.AttackTiles(grid, unit)
+            : new List<Vector2Int>();
 
         if (TileOverlay.Instance != null) TileOverlay.Instance.Show(moveTiles, attackTiles);
         GameEvents.OnUnitSelected?.Invoke(unit);
+    }
+
+    public void WaitSelected()
+    {
+        if (state != State.Selected) return;
+        var unit = selected;
+        Deselect();
+        BattleManager.Instance.Wait(unit);
+        BattleManager.Instance.EndTurnIfNoOptions();
     }
 
     void Deselect()
@@ -103,7 +117,7 @@ public class BattleInput : MonoBehaviour
         if (TileOverlay.Instance != null) TileOverlay.Instance.Clear();
 
         var grid = GridManager.Instance;
-        // Keep the unit's own vertical offset (a capsule sits higher than a flat model)
+        // Keep the unit's own vertical offset since a capsule sits higher than a flat model
         float yOffset = unit.transform.position.y - grid.TileToWorld(unit.gridPos).y;
         Vector3 from = unit.transform.position;
         Vector3 to = grid.TileToWorld(target) + Vector3.up * yOffset;
@@ -120,9 +134,47 @@ public class BattleInput : MonoBehaviour
         BattleManager.Instance.MarkMoved(unit);
         GameEvents.OnUnitMoved?.Invoke(unit, target);
 
-        selected = null;
+        Finish(unit);
+    }
+
+    IEnumerator AttackRoutine(Unit attacker, Unit target)
+    {
+        state = State.Moving;
+        if (TileOverlay.Instance != null) TileOverlay.Instance.Clear();
+
+        Vector3 from = attacker.transform.position;
+        Vector3 dir = target.transform.position - from;
+        dir.y = 0f;
+        Vector3 peak = from + dir.normalized * lungeDistance;
+        float half = lungeDuration * 0.5f;
+
+        for (float t = 0f; t < half; t += Time.deltaTime)
+        {
+            attacker.transform.position = Vector3.Lerp(from, peak, t / half);
+            yield return null;
+        }
+        attacker.transform.position = peak;
+        BattleManager.Instance.Attack(attacker, target);
+        for (float t = 0f; t < half; t += Time.deltaTime)
+        {
+            attacker.transform.position = Vector3.Lerp(peak, from, t / half);
+            yield return null;
+        }
+        attacker.transform.position = from;
+
+        Finish(attacker);
+    }
+
+    // Keeps the unit selected while it still has a move or an attack, then checks for the end of the turn
+    void Finish(Unit unit)
+    {
+        var battle = BattleManager.Instance;
         reachable = null;
         state = State.Idle;
+        selected = null;
         GameEvents.OnSelectionCleared?.Invoke();
+        if (unit != null && battle.CanSelect(unit) && Combat.HasOptions(GridManager.Instance, battle, unit))
+            Select(unit);
+        battle.EndTurnIfNoOptions();
     }
 }
