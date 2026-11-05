@@ -10,6 +10,7 @@ public class BattleHUD : MonoBehaviour
     public string menuSceneName = "Menu";
 
     Unit selected;
+    string result;
     Rect topBar, panel;
 
     float Scale => Mathf.Max(1f, Screen.height / 720f);
@@ -20,16 +21,19 @@ public class BattleHUD : MonoBehaviour
     {
         GameEvents.OnUnitSelected += OnSelected;
         GameEvents.OnSelectionCleared += OnCleared;
+        GameEvents.OnLevelEnded += OnEnded;
     }
 
     void OnDisable()
     {
         GameEvents.OnUnitSelected -= OnSelected;
         GameEvents.OnSelectionCleared -= OnCleared;
+        GameEvents.OnLevelEnded -= OnEnded;
     }
 
     void OnSelected(Unit unit) { selected = unit; }
     void OnCleared() { selected = null; }
+    void OnEnded(bool playerWon) { result = playerWon ? "Victory" : "Defeat"; }
 
     // BattleInput asks this so that clicks on the HUD do not also click the board
     public bool BlocksPoint(Vector2 mouse)
@@ -53,7 +57,7 @@ public class BattleHUD : MonoBehaviour
         GUILayout.BeginArea(new Rect(10, 6, w - 20, 32));
         GUILayout.BeginHorizontal();
 
-        string who = battle == null ? "" : (battle.CurrentTeam == Team.Player ? "Your turn" : "Enemy turn");
+        string who = result != null ? result : battle == null ? "" : (battle.CurrentTeam == Team.Player ? "Your turn" : "Enemy turn");
         string turn = battle == null ? "" : "   (turn " + battle.TurnNumber + ")";
         GUILayout.Label(who + turn, GUILayout.Width(260));
         GUILayout.FlexibleSpace();
@@ -70,12 +74,20 @@ public class BattleHUD : MonoBehaviour
         // Selected unit panel
         if (selected != null && selected.data != null)
         {
-            panel = new Rect(10, h - 150, 270, 140);
+            panel = new Rect(10, h - 180, 270, 170);
             GUI.Box(panel, "Selected unit");
             GUILayout.BeginArea(new Rect(panel.x + 12, panel.y + 28, panel.width - 24, panel.height - 34));
             GUILayout.Label(selected.data.displayName + "  (" + selected.team + ")");
-            GUILayout.Label("HP  " + selected.currentHP + " / " + selected.data.maxHP);
-            GUILayout.Label("Move " + selected.data.moveRange + "     Attack range " + selected.data.attackRange);
+            GUILayout.Label("HP  " + selected.currentHP + " / " + UnitStats.MaxHP(selected));
+            GUILayout.Label("Attack " + UnitStats.Attack(selected) + "   Move " + UnitStats.MoveRange(selected) +
+                "   Range " + UnitStats.AttackRange(selected));
+            bool ours = selected.team == Team.Player;
+            if (battle != null && ours)
+                GUILayout.Label((battle.HasMoved(selected) ? "Moved" : "Can move") + "   " +
+                    (battle.HasActed(selected) ? "Acted" : "Can act"));
+            GUI.enabled = ours && battle != null && battle.CurrentTeam == Team.Player && !busy && !battle.LevelOver;
+            if (ours && GUILayout.Button("Wait")) BattleInput.Instance.WaitSelected();
+            GUI.enabled = true;
             GUILayout.EndArea();
         }
 

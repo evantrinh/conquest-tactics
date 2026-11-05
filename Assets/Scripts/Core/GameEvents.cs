@@ -13,4 +13,7 @@ public static class GameEvents
     public static Action<Unit> OnUnitDamaged;
     public static Action<Team> OnTurnChanged;
     public static Action<bool> OnLevelEnded;            // true = player won
+    public static Action<Unit, Unit, int> OnUnitAttacked;   // attacker, target, damage
+    public static Action<Unit> OnUnitKilled;
+    public static Action<Unit> OnUnitWaited;
 }

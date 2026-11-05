@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Put this on any object in the scene. It finds the Main Camera and positions it itself.
-// It frames the board automatically, rotates in 90 degree steps (Q and E),
+// It frames the board automatically, rotates in 90 degree steps with Q and E,
 // and exposes FocusOn / ReturnToOverview for anything that wants a camera shot.
 public class CameraRig : MonoBehaviour
 {
@@ -62,7 +62,7 @@ public class CameraRig : MonoBehaviour
 
     // ---- Public camera controls ----
 
-    // Move toward a point. zoom is a fraction of the full-board view (0.6 = closer).
+    // Move toward a point. zoom is a fraction of the full-board view where 0.6 is closer.
     public void FocusOn(Vector3 worldPoint, float zoom = 0.6f)
     {
         overview = false;

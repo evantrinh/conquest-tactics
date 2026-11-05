@@ -70,6 +70,7 @@ public class UnitSpawner : MonoBehaviour
         unit.data = s.unit;
         unit.team = s.team;
         unit.gridPos = s.position;
+        unit.currentHP = UnitStats.MaxHP(unit);
 
         spawned.Add(go);
         GameEvents.OnUnitSpawned?.Invoke(unit);
