@@ -8,5 +8,10 @@ public enum TileType {
   Dirt,
   Stone,
   Water,
-  Wall
+  Wall,
+  Snow,
+  Ice,
+  Lava,
+  Sand,
+  Mud
 }
