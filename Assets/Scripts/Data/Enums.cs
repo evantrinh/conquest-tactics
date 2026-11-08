@@ -13,5 +13,6 @@ public enum TileType {
   Ice,
   Lava,
   Sand,
-  Mud
+  Mud,
+  QuickSand
 }

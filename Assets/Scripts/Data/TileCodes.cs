@@ -11,11 +11,12 @@ public static class TileCodes
             case 's': type = TileType.Stone; return true;
             case 'w': type = TileType.Water; return true;
             case '#': type = TileType.Wall;  return true;
-            case 'm': type = TileType.Snow;  return true;
+            case '^': type = TileType.Snow;  return true;
             case 'i': type = TileType.Ice;   return true;
             case 'l': type = TileType.Lava;  return true;
             case '+': type = TileType.Sand;  return true;
-            case '^': type = TileType.Mud;   return true;
+            case 'm': type = TileType.Mud;   return true;
+            case 'q': type = TileType.QuickSand; return true;
             default:  type = TileType.Grass; return false;
         }
     }
@@ -29,11 +30,12 @@ public static class TileCodes
             case TileType.Stone: return 's';
             case TileType.Water: return 'w';
             case TileType.Wall:  return '#';
-            case TileType.Snow:  return 'm';
+            case TileType.Snow:  return '^';
             case TileType.Ice:   return 'i';
             case TileType.Lava:  return 'l';
             case TileType.Sand:  return '+';
-            case TileType.Mud:   return '^';
+            case TileType.Mud:   return 'm';
+            case TileType.QuickSand: return 'q';
             default:             return 'g';
         }
     }

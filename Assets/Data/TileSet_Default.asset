@@ -54,3 +54,7 @@ MonoBehaviour:
     prefab: {fileID: 0}
     tint: 1
     color: {r: 0.9212798, g: 0.9413522, b: 0.9716981, a: 1}
+  - type: 10
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.6698113, g: 0.60075396, b: 0.18640976, a: 1}
