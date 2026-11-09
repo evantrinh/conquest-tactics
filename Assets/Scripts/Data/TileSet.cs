@@ -10,7 +10,7 @@ public class TileSet : ScriptableObject
     {
         public TileType type;
         public GameObject prefab;        // leave empty to use the fallback prefab
-        public bool tint = true;         // colour the prefab (turn off for textured models)
+        public bool tint = true;         // colour the prefab, turn off for textured models
         public Color color = Color.white;
     }
 

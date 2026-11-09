@@ -1,7 +1,7 @@
 using UnityEngine;
 
 // Zooms toward a unit when it is selected and returns to the overview when it is not.
-// Swap this out (or add other listeners) to change what the camera does on selection.
+// Swap this out or add other listeners to change what the camera does on selection.
 public class SelectionCameraFocus : MonoBehaviour
 {
     [Range(0.2f, 1f)] public float zoom = 0.65f;

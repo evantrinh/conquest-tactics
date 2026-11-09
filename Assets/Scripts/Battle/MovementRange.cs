@@ -9,8 +9,15 @@ public static class MovementRange
     // Returns every reachable tile with the movement points spent to reach it.
     // A climb of more than 1 level is blocked, and each step uphill costs extra.
     public static Dictionary<Vector2Int, int> GetReachable(
-        IGrid grid, Vector2Int start, int movePoints, HashSet<Vector2Int> blocked = null)
+        IGrid grid, Vector2Int start, int movePoints, HashSet<Vector2Int> blocked = null) =>
+        GetReachable(grid, start, movePoints, blocked, out _);
+
+    // Also returns, for each reached tile, the tile it was reached from
+    public static Dictionary<Vector2Int, int> GetReachable(
+        IGrid grid, Vector2Int start, int movePoints, HashSet<Vector2Int> blocked,
+        out Dictionary<Vector2Int, Vector2Int> cameFrom)
     {
+        cameFrom = new Dictionary<Vector2Int, Vector2Int>();
         var cost = new Dictionary<Vector2Int, int> { [start] = 0 };
         var frontier = new List<Vector2Int> { start };
 
@@ -37,6 +44,7 @@ public static class MovementRange
                 if (!cost.ContainsKey(next) || total < cost[next])
                 {
                     cost[next] = total;
+                    cameFrom[next] = current;
                     frontier.Add(next);
                 }
             }

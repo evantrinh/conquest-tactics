@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Keeps the list of units and whose turn it is. Barebones on purpose:
-// the enemy turn is skipped until enemy AI exists.
+// Keeps the list of units, whose turn it is, and what each player unit has used this turn.
+// Each unit gets one move and one action. Moves and actions spend the shared action points.
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
@@ -11,16 +11,27 @@ public class BattleManager : MonoBehaviour
     public Team CurrentTeam { get; private set; } = Team.Player;
     public int TurnNumber { get; private set; } = 1;
 
-    [Tooltip("Turn this off once enemy AI ends its own turn by calling EndTurn().")]
+    [Tooltip("Turn this off once enemy AI ends its own turn by calling EndTurn.")]
     public bool autoSkipEnemyTurn = true;
     public float enemyTurnDelay = 1f;
 
     readonly List<Unit> units = new List<Unit>();
     readonly HashSet<Unit> moved = new HashSet<Unit>();
+    readonly HashSet<Unit> acted = new HashSet<Unit>();
+    readonly HashSet<Unit> waited = new HashSet<Unit>();
+
+    public bool LevelOver { get; private set; }
 
     public IReadOnlyList<Unit> Units => units;
 
-    void Awake() { Instance = this; }
+    public ActionPoints Points { get; private set; }
+
+    void Awake()
+    {
+        Instance = this;
+        Points = GetComponent<ActionPoints>();
+        if (Points == null) Points = gameObject.AddComponent<ActionPoints>();
+    }
     void OnEnable() { GameEvents.OnUnitSpawned += Register; }
     void OnDisable() { GameEvents.OnUnitSpawned -= Register; }
     void Start() { GameEvents.OnTurnChanged?.Invoke(CurrentTeam); }
@@ -46,15 +57,85 @@ public class BattleManager : MonoBehaviour
     }
 
     public bool HasMoved(Unit unit) => moved.Contains(unit);
+    public bool HasActed(Unit unit) => acted.Contains(unit);
+
+    // Only the player team spends action points
+    public int MoveCost(Unit unit)
+    {
+        if (unit.team != Team.Player) return 0;
+        return Points.Rules.moveCost;
+    }
+
+    public int ActionCost(Unit unit) => unit.team == Team.Player ? Points.Rules.actionCost : 0;
+
+    public bool CanMove(Unit unit) =>
+        !LevelOver && !waited.Contains(unit) && !moved.Contains(unit) &&
+        (MoveCost(unit) == 0 || Points.CanSpend(MoveCost(unit)));
+
+    public bool CanAct(Unit unit) =>
+        !LevelOver && !waited.Contains(unit) && !acted.Contains(unit) &&
+        (ActionCost(unit) == 0 || Points.CanSpend(ActionCost(unit)));
 
     public bool CanSelect(Unit unit) =>
-        unit != null && unit.team == CurrentTeam && CurrentTeam == Team.Player && !moved.Contains(unit);
+        unit != null && unit.team == CurrentTeam && CurrentTeam == Team.Player &&
+        (CanMove(unit) || CanAct(unit));
 
-    public void MarkMoved(Unit unit) { moved.Add(unit); }
+    public void MarkMoved(Unit unit)
+    {
+        Points.Spend(MoveCost(unit));
+        moved.Add(unit);
+    }
+
+    public void Wait(Unit unit)
+    {
+        waited.Add(unit);
+        GameEvents.OnUnitWaited?.Invoke(unit);
+    }
+
+    public void Attack(Unit attacker, Unit target)
+    {
+        int damage = Combat.Damage(GridManager.Instance, attacker, target);
+        Points.Spend(ActionCost(attacker));
+        acted.Add(attacker);
+        GameEvents.OnUnitAttacked?.Invoke(attacker, target, damage);
+        target.currentHP -= damage;
+        GameEvents.OnUnitDamaged?.Invoke(target);
+        if (target.currentHP <= 0) Kill(target);
+    }
+
+    void Kill(Unit unit)
+    {
+        units.Remove(unit);
+        GameEvents.OnUnitKilled?.Invoke(unit);
+        foreach (var c in unit.GetComponentsInChildren<Collider>()) c.enabled = false;
+        Destroy(unit.gameObject, 0.4f);
+
+        bool playersLeft = false, enemiesLeft = false;
+        foreach (var u in units)
+        {
+            if (u.team == Team.Player) playersLeft = true; else enemiesLeft = true;
+        }
+        if (playersLeft && enemiesLeft) return;
+        LevelOver = true;
+        GameEvents.OnLevelEnded?.Invoke(playersLeft);
+    }
+
+    // Ends the player turn when no unit has a move or an attack left
+    public void EndTurnIfNoOptions()
+    {
+        if (LevelOver || CurrentTeam != Team.Player) return;
+        foreach (var u in units)
+            if (u != null && u.team == Team.Player && Combat.HasOptions(GridManager.Instance, this, u)) return;
+        EndTurn();
+    }
 
     public void EndTurn()
     {
+        if (LevelOver) return;
         moved.Clear();
+        acted.Clear();
+        waited.Clear();
+        Points.Refill();
         if (CurrentTeam == Team.Player) CurrentTeam = Team.Enemy;
         else { CurrentTeam = Team.Player; TurnNumber++; }
 

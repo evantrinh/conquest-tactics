@@ -21,6 +21,9 @@ public class LevelData : ScriptableObject
     [TextArea(8, 16)] public string layout;
 
     public SpawnEntry[] spawns;
+
+    [Tooltip("Action points per player turn. Zero uses the formula in the rules asset.")]
+    public int actionPointsOverride = 0;
     // Person A adds the objective reference in week 2
 
     // Filled in by Apply Layout. The game reads these arrays, never the text.

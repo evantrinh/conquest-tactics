@@ -8,6 +8,8 @@ public class UnitData : ScriptableObject
     public int attack = 3;
     public int moveRange = 3;
     public int attackRange = 1;
+    [Tooltip("Optional. When empty the attack range number is used as a diamond.")]
+    public RangePattern attackPattern;
     public GameObject modelPrefab;
     // add skills and stuff as needed later
 }
