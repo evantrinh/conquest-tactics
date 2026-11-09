@@ -17,4 +17,4 @@ MonoBehaviour:
   attack: 3
   moveRange: 3
   attackRange: 1
-  modelPrefab: {fileID: 0}
+  modelPrefab: {fileID: 6600739422966425525, guid: 9e2eed66451faec418c76e092acfee92, type: 3}
