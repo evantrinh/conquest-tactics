@@ -1,0 +1,30 @@
+.unit-card {
+    position: absolute;
+    left: 16px;
+    top: 64px;
+    width: 260px;
+    padding: 12px;
+    background-color: var(--c-panel);
+    display: none;
+}
+
+.unit-card .unity-label {
+    color: var(--c-text);
+}
+
+.unit-card--shown {
+    display: flex;
+}
+
+.unit-card__team {
+    margin-bottom: 8px;
+}
+
+.unit-card__stats {
+    flex-direction: row;
+    margin-top: 8px;
+}
+
+.unit-card__stat {
+    flex-grow: 1;
+}

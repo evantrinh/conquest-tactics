@@ -1,0 +1,6 @@
+:root {
+    --c-panel: rgb(30, 30, 30);
+    --c-text: rgb(255, 255, 255);
+    --c-track: rgb(70, 70, 70);
+    --c-fill: rgb(120, 200, 120);
+}

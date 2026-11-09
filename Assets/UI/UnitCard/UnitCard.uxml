@@ -1,0 +1,15 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:c="ContourUI">
+    <ui:Style src="../Shared/Theme.uss" />
+    <ui:Style src="../Widgets/HpBar/HpBar.uss" />
+    <ui:Style src="UnitCard.uss" />
+    <ui:VisualElement name="unitCard" class="unit-card" picking-mode="Ignore">
+        <ui:Label name="unitName" class="unit-card__name" text="Footman" picking-mode="Ignore" />
+        <ui:Label name="unitTeam" class="unit-card__team" text="Player" picking-mode="Ignore" />
+        <c:HpBar name="hpBar" hp="14" max-hp="20" picking-mode="Ignore" />
+        <ui:VisualElement class="unit-card__stats" picking-mode="Ignore">
+            <ui:Label name="attackStat" class="unit-card__stat" text="Attack 5" picking-mode="Ignore" />
+            <ui:Label name="moveStat" class="unit-card__stat" text="Move 4" picking-mode="Ignore" />
+            <ui:Label name="rangeStat" class="unit-card__stat" text="Range 1" picking-mode="Ignore" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
