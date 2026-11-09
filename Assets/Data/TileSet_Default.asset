@@ -17,7 +17,7 @@ MonoBehaviour:
   - type: 0
     prefab: {fileID: 0}
     tint: 1
-    color: {r: 0, g: 0.27450982, b: 0, a: 1}
+    color: {r: 0.037869357, g: 0.3490566, b: 0.037869375, a: 1}
   - type: 1
     prefab: {fileID: 0}
     tint: 1
@@ -25,12 +25,36 @@ MonoBehaviour:
   - type: 2
     prefab: {fileID: 0}
     tint: 1
-    color: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
+    color: {r: 0.33962262, g: 0.33962262, b: 0.33962262, a: 1}
   - type: 3
     prefab: {fileID: 0}
     tint: 1
-    color: {r: 0, g: 0.7490196, b: 1, a: 1}
+    color: {r: 0.08962262, g: 0.77151316, b: 1, a: 1}
   - type: 4
     prefab: {fileID: 0}
     tint: 1
-    color: {r: 0.2028302, g: 0.13408525, b: 0.12533376, a: 1}
+    color: {r: 0.23584908, g: 0.194798, b: 0.19023676, a: 1}
+  - type: 7
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.9339623, g: 0.15047666, b: 0.048460312, a: 1}
+  - type: 6
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.1033731, g: 0.41022533, b: 0.9528302, a: 1}
+  - type: 8
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.8773585, g: 0.8323802, b: 0.5504183, a: 1}
+  - type: 9
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.3584906, g: 0.14899358, b: 0.0016909974, a: 1}
+  - type: 5
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.9212798, g: 0.9413522, b: 0.9716981, a: 1}
+  - type: 10
+    prefab: {fileID: 0}
+    tint: 1
+    color: {r: 0.6698113, g: 0.60075396, b: 0.18640976, a: 1}
