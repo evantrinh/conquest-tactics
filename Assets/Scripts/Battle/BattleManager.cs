@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Keeps the list of units, whose turn it is, and what each player unit has used this turn.
-// Each unit gets any number of moves and one action. Moves and actions spend the shared action points.
+// Each unit gets one move and one action. Moves and actions spend the shared action points.
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
@@ -16,7 +16,7 @@ public class BattleManager : MonoBehaviour
     public float enemyTurnDelay = 1f;
 
     readonly List<Unit> units = new List<Unit>();
-    readonly Dictionary<Unit, int> moves = new Dictionary<Unit, int>();
+    readonly HashSet<Unit> moved = new HashSet<Unit>();
     readonly HashSet<Unit> acted = new HashSet<Unit>();
     readonly HashSet<Unit> waited = new HashSet<Unit>();
 
@@ -56,20 +56,21 @@ public class BattleManager : MonoBehaviour
         return set;
     }
 
-    public bool HasMoved(Unit unit) => moves.ContainsKey(unit);
+    public bool HasMoved(Unit unit) => moved.Contains(unit);
     public bool HasActed(Unit unit) => acted.Contains(unit);
 
     // Only the player team spends action points
     public int MoveCost(Unit unit)
     {
         if (unit.team != Team.Player) return 0;
-        return HasMoved(unit) ? Points.Rules.extraMoveCost : Points.Rules.firstMoveCost;
+        return Points.Rules.moveCost;
     }
 
     public int ActionCost(Unit unit) => unit.team == Team.Player ? Points.Rules.actionCost : 0;
 
     public bool CanMove(Unit unit) =>
-        !LevelOver && !waited.Contains(unit) && (MoveCost(unit) == 0 || Points.CanSpend(MoveCost(unit)));
+        !LevelOver && !waited.Contains(unit) && !moved.Contains(unit) &&
+        (MoveCost(unit) == 0 || Points.CanSpend(MoveCost(unit)));
 
     public bool CanAct(Unit unit) =>
         !LevelOver && !waited.Contains(unit) && !acted.Contains(unit) &&
@@ -82,7 +83,7 @@ public class BattleManager : MonoBehaviour
     public void MarkMoved(Unit unit)
     {
         Points.Spend(MoveCost(unit));
-        moves[unit] = moves.TryGetValue(unit, out var n) ? n + 1 : 1;
+        moved.Add(unit);
     }
 
     public void Wait(Unit unit)
@@ -131,7 +132,7 @@ public class BattleManager : MonoBehaviour
     public void EndTurn()
     {
         if (LevelOver) return;
-        moves.Clear();
+        moved.Clear();
         acted.Clear();
         waited.Clear();
         Points.Refill();
