@@ -470,6 +470,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TileOverlay
   moveColor: {r: 0.4, g: 0.85, b: 1, a: 0.55}
   attackColor: {r: 1, g: 0.3, b: 0.3, a: 0.5}
+  enemyMoveColor: {r: 0.65, g: 0.65, b: 0.65, a: 0.6}
   overlayMaterial: {fileID: 0}
 --- !u!114 &677714469
 MonoBehaviour:
@@ -497,7 +498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f789dd331ed1646a64b95811f5d50c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BattleInput
-  moveDuration: 0.35
+  moveDuration: 0.95
   lungeDuration: 0.25
   lungeDistance: 0.4
 --- !u!114 &677714471
@@ -633,7 +634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3b5d77fc64cca944983e17b83f94a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
-  level: {fileID: 11400000, guid: 276a556090063244681e0c70147988d9, type: 2}
+  level: {fileID: 11400000, guid: 5637839f5c56b3748a06225f1cef8eec, type: 2}
   tileSet: {fileID: 11400000, guid: fbb264ad0bbe78c468e76055fd189a75, type: 2}
   heightStep: 0.5
 --- !u!1660057539 &9223372036854775807

@@ -148,6 +148,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Army_Knight_Blue
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ad497ba83e315124b85c7d5edc2010e2, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ad497ba83e315124b85c7d5edc2010e2, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d875b4400266b7646b433bc408b34f13, type: 2}
+    - target: {fileID: 5866666021909216657, guid: ad497ba83e315124b85c7d5edc2010e2, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6907157583086450047, guid: ad497ba83e315124b85c7d5edc2010e2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
