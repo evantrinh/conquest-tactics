@@ -4,3 +4,7 @@
     --c-track: rgb(70, 70, 70);
     --c-fill: rgb(120, 200, 120);
 }
+
+.hidden {
+    display: none;
+}

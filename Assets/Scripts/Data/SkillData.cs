@@ -11,6 +11,7 @@ public class SkillData : ScriptableObject
     public string displayName;
     public SkillEffect effect;
     public SkillTargeting targeting = SkillTargeting.Tile;
+    [TextArea(2, 4)] public string description;
 
     [Tooltip("Skill points spent by the caster.")]
     public int spCost = 2;

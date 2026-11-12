@@ -15,6 +15,7 @@ MonoBehaviour:
   displayName: Rally
   effect: 2
   targeting: 1
+  description: Adds 2 action points to the pool for this turn. Costs no action points.
   spCost: 3
   actionCost: 0
   castRange: {fileID: 0}

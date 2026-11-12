@@ -1,0 +1,55 @@
+.battle-root {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.battle-root .unity-label {
+    color: var(--c-text);
+}
+
+.top-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    background-color: var(--c-panel);
+}
+
+.top-bar__item {
+    margin-right: 16px;
+}
+
+.top-bar__button {
+    width: 100px;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.banner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 120px;
+    font-size: 32px;
+    -unity-text-align: middle-center;
+    display: none;
+}
+
+.banner--shown {
+    display: flex;
+}
+
+.roster {
+    position: absolute;
+    left: 16px;
+    bottom: 16px;
+    flex-direction: row;
+}

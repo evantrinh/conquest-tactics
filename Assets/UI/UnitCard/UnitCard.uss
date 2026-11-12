@@ -2,7 +2,7 @@
     position: absolute;
     left: 16px;
     top: 64px;
-    width: 260px;
+    width: 280px;
     padding: 12px;
     background-color: var(--c-panel);
     display: none;
@@ -20,11 +20,42 @@
     margin-bottom: 8px;
 }
 
+.unit-card__row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.unit-card__sp-label {
+    margin-right: 8px;
+}
+
 .unit-card__stats {
     flex-direction: row;
     margin-top: 8px;
 }
 
 .unit-card__stat {
+    flex-grow: 1;
+}
+
+.unit-card__status {
+    margin-top: 4px;
+}
+
+.unit-card__skill {
+    margin-top: 8px;
+}
+
+.unit-card__skill-name {
+    -unity-font-style: bold;
+}
+
+.unit-card__buttons {
+    flex-direction: row;
+    margin-top: 8px;
+}
+
+.unit-card__button {
     flex-grow: 1;
 }

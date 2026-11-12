@@ -1,0 +1,21 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../Shared/Theme.uss" />
+    <ui:Style src="Menu.uss" />
+    <ui:VisualElement name="menuRoot" class="menu-root" picking-mode="Ignore">
+        <ui:Label name="title" class="menu-title" />
+        <ui:VisualElement name="homePage" class="menu-page">
+            <ui:Button name="playButton" text="Play" />
+            <ui:Button name="quitButton" text="Quit" />
+        </ui:VisualElement>
+        <ui:VisualElement name="campaignPage" class="menu-page hidden">
+            <ui:Label text="Choose a campaign" />
+            <ui:VisualElement name="campaignList" />
+            <ui:Button name="campaignBack" text="Back" />
+        </ui:VisualElement>
+        <ui:VisualElement name="levelPage" class="menu-page hidden">
+            <ui:Label name="campaignDescription" />
+            <ui:VisualElement name="levelList" />
+            <ui:Button name="levelBack" text="Back" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

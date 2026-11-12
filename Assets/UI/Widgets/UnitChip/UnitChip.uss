@@ -1,0 +1,6 @@
+.unit-chip {
+    width: 170px;
+    padding: 6px;
+    margin-right: 6px;
+    background-color: var(--c-panel);
+}

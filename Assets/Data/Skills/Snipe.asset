@@ -15,6 +15,7 @@ MonoBehaviour:
   displayName: Snipe
   effect: 0
   targeting: 0
+  description: A heavy shot at one tile, 3 to 6 tiles away in a straight line.
   spCost: 3
   actionCost: 1
   castRange: {fileID: 11400000, guid: 9189a975711dd5d4096a8e467969e890, type: 2}

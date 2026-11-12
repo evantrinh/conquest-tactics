@@ -15,6 +15,7 @@ MonoBehaviour:
   displayName: Sweep
   effect: 0
   targeting: 1
+  description: Hits every enemy in the 8 tiles around the caster.
   spCost: 3
   actionCost: 1
   castRange: {fileID: 0}

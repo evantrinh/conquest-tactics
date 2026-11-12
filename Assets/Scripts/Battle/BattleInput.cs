@@ -13,6 +13,7 @@ public class BattleInput : MonoBehaviour
     public bool IsMoving => state == State.Moving;
     public Unit Selected => selected;
     public bool IsTargeting => state == State.Targeting;
+    public bool IsSelecting => state == State.Selected;
 
     public float lungeDuration = 0.25f;
     public float lungeDistance = 0.4f;
@@ -41,7 +42,7 @@ public class BattleInput : MonoBehaviour
         var battle = BattleManager.Instance;
         var grid = GridManager.Instance;
         if (battle == null || grid == null || battle.CurrentTeam != Team.Player) return;
-        if (BattleHUD.Instance != null && BattleHUD.Instance.BlocksPoint(Input.mousePosition)) return;
+        if (BattleScreenView.Instance != null && BattleScreenView.Instance.BlocksPoint(Input.mousePosition)) return;
 
         if (!Pick(battle, out var units, out var tile)) { Deselect(); return; }
 
@@ -98,7 +99,19 @@ public class BattleInput : MonoBehaviour
         return true;
     }
 
-    // Called by the HUD button
+    // Called by the roster. Commandable units are selected, the rest are inspected.
+    public void Choose(Unit unit)
+    {
+        var battle = BattleManager.Instance;
+        if (battle == null || battle.CurrentTeam != Team.Player) return;
+        if (state == State.Moving || state == State.Targeting) return;
+
+        if (unit == selected) Deselect();
+        else if (battle.CanSelect(unit)) Select(unit);
+        else Inspect(unit);
+    }
+
+    // Called by the skill button
     public void BeginTargeting()
     {
         var battle = BattleManager.Instance;
@@ -134,7 +147,7 @@ public class BattleInput : MonoBehaviour
 
         var battle = BattleManager.Instance;
         if (battle == null || battle.CurrentTeam != Team.Player) return;
-        if (BattleHUD.Instance != null && BattleHUD.Instance.BlocksPoint(Input.mousePosition)) return;
+        if (BattleScreenView.Instance != null && BattleScreenView.Instance.BlocksPoint(Input.mousePosition)) return;
         if (!Pick(battle, out var units, out var tile)) return;
 
         bool found = units.Count > 0 || tile != null;
