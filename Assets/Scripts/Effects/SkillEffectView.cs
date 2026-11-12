@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// Shows a skill's area: a glow on the tiles and a see-through wall that rises from the outline and fades into the air.
+// Outlines a skill's area. A glowing line follows the edge of the area along the terrain, a soft wall fades
+// up into the air and down the side of the terrain from that line, and the tiles inside glow faintly.
 public class SkillEffectView : MonoBehaviour
 {
     public float duration = 0.9f;
-    public float wallHeight = 1.4f;
-    public float glowAlpha = 0.5f;
-    public float wallAlpha = 0.85f;
+    public float outlineWidth = 0.14f;
+    public float outlineAlpha = 1f;
+    public float wallUp = 0.9f;
+    public float wallDown = 0.9f;
+    public float wallAlpha = 0.45f;
+    public float fillAlpha = 0.18f;
 
     static readonly Vector2Int[] Dirs = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
 
@@ -22,9 +26,10 @@ public class SkillEffectView : MonoBehaviour
 
     IEnumerator Run(Color color, List<Vector2Int> tiles)
     {
+        // Left at the scene root. The mesh is built in world space, so a parent that is moved would shift it.
         var go = new GameObject("SkillEffect");
-        go.transform.SetParent(transform, false);
-        go.AddComponent<MeshFilter>().sharedMesh = BuildMesh(color, tiles);
+        var mesh = BuildMesh(color, tiles);
+        go.AddComponent<MeshFilter>().sharedMesh = mesh;
         var renderer = go.AddComponent<MeshRenderer>();
         var material = new Material(Shader.Find("Sprites/Default"));
         renderer.sharedMaterial = material;
@@ -39,7 +44,7 @@ public class SkillEffectView : MonoBehaviour
             yield return null;
         }
 
-        Destroy(go.GetComponent<MeshFilter>().sharedMesh);
+        Destroy(mesh);
         Destroy(material);
         Destroy(go);
     }
@@ -52,49 +57,44 @@ public class SkillEffectView : MonoBehaviour
         var colors = new List<Color>();
         var triangles = new List<int>();
 
-        var edgeColor = new Color(color.r, color.g, color.b, glowAlpha * 0.6f);
-        var centerColor = new Color(color.r, color.g, color.b, glowAlpha);
-        var wallBottom = new Color(color.r, color.g, color.b, wallAlpha);
-        var wallTop = new Color(color.r, color.g, color.b, 0f);
+        var clear = new Color(color.r, color.g, color.b, 0f);
+        var fill = new Color(color.r, color.g, color.b, fillAlpha);
+        var line = new Color(color.r, color.g, color.b, outlineAlpha);
+        var wall = new Color(color.r, color.g, color.b, wallAlpha);
 
         foreach (var p in tiles)
         {
+            // Just above the tile surface, so it sits over the range overlay
             var c = grid.TileToWorld(p) + Vector3.up * 0.06f;
 
-            // Tile glow: brighter in the middle
-            int b = vertices.Count;
-            vertices.Add(c);
-            colors.Add(centerColor);
-            vertices.Add(c + new Vector3(-0.5f, 0, -0.5f));
-            vertices.Add(c + new Vector3(0.5f, 0, -0.5f));
-            vertices.Add(c + new Vector3(0.5f, 0, 0.5f));
-            vertices.Add(c + new Vector3(-0.5f, 0, 0.5f));
-            for (int i = 0; i < 4; i++) colors.Add(edgeColor);
-            for (int i = 0; i < 4; i++)
-            {
-                triangles.Add(b);
-                triangles.Add(b + 1 + i);
-                triangles.Add(b + 1 + (i + 1) % 4);
-            }
+            AddQuad(vertices, colors, triangles,
+                c + new Vector3(-0.5f, 0, -0.5f), c + new Vector3(0.5f, 0, -0.5f),
+                c + new Vector3(0.5f, 0, 0.5f), c + new Vector3(-0.5f, 0, 0.5f),
+                fill, fill, fill, fill);
 
-            // Wall on every side that faces outside the area
             foreach (var d in Dirs)
             {
                 if (set.Contains(p + d)) continue;
-                var along = new Vector3(d.y, 0, d.x) * 0.5f;      // half an edge, sideways
-                var edge = c + new Vector3(d.x, 0, d.y) * 0.5f;   // middle of that edge
-                var up = Vector3.up * wallHeight;
 
-                int w = vertices.Count;
-                vertices.Add(edge - along);
-                vertices.Add(edge + along);
-                vertices.Add(edge + along + up);
-                vertices.Add(edge - along + up);
-                colors.Add(wallBottom);
-                colors.Add(wallBottom);
-                colors.Add(wallTop);
-                colors.Add(wallTop);
-                triangles.AddRange(new[] { w, w + 1, w + 2, w, w + 2, w + 3 });
+                var outward = new Vector3(d.x, 0, d.y);
+                var along = new Vector3(d.y, 0, d.x) * 0.5f;
+                var edge = c + outward * 0.5f;
+
+                // Glowing line on the terrain, bright on the edge and fading inwards
+                var inward = -outward * outlineWidth;
+                AddQuad(vertices, colors, triangles,
+                    edge - along, edge + along, edge + along + inward, edge - along + inward,
+                    line, line, clear, clear);
+
+                // Wall that is strongest at the line and fades both up and down
+                var up = Vector3.up * wallUp;
+                var down = Vector3.down * wallDown;
+                AddQuad(vertices, colors, triangles,
+                    edge - along, edge + along, edge + along + up, edge - along + up,
+                    wall, wall, clear, clear);
+                AddQuad(vertices, colors, triangles,
+                    edge - along + down, edge + along + down, edge + along, edge - along,
+                    clear, clear, wall, wall);
             }
         }
 
@@ -104,5 +104,15 @@ public class SkillEffectView : MonoBehaviour
         mesh.SetTriangles(triangles, 0);
         mesh.RecalculateBounds();
         return mesh;
+    }
+
+    static void AddQuad(List<Vector3> vertices, List<Color> colors, List<int> triangles,
+        Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color ca, Color cb, Color cc, Color cd)
+    {
+        int i = vertices.Count;
+        vertices.Add(a); vertices.Add(b); vertices.Add(c); vertices.Add(d);
+        colors.Add(ca); colors.Add(cb); colors.Add(cc); colors.Add(cd);
+        triangles.Add(i); triangles.Add(i + 1); triangles.Add(i + 2);
+        triangles.Add(i); triangles.Add(i + 2); triangles.Add(i + 3);
     }
 }
