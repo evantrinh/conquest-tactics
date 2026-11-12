@@ -14,6 +14,8 @@ public class SkillEffectView : MonoBehaviour
     public float wallAlpha = 0.45f;
     public float fillAlpha = 0.18f;
 
+    const float FaceGap = 0.015f;   // keeps the wall just off the terrain face so they do not flicker
+
     static readonly Vector2Int[] Dirs = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
 
     void OnEnable() { GameEvents.OnSkillUsed += Play; }
@@ -61,6 +63,7 @@ public class SkillEffectView : MonoBehaviour
         var fill = new Color(color.r, color.g, color.b, fillAlpha);
         var line = new Color(color.r, color.g, color.b, outlineAlpha);
         var wall = new Color(color.r, color.g, color.b, wallAlpha);
+        float baseY = grid.transform.position.y;
 
         foreach (var p in tiles)
         {
@@ -78,7 +81,7 @@ public class SkillEffectView : MonoBehaviour
 
                 var outward = new Vector3(d.x, 0, d.y);
                 var along = new Vector3(d.y, 0, d.x) * 0.5f;
-                var edge = c + outward * 0.5f;
+                var edge = c + outward * (0.5f + FaceGap);
 
                 // Glowing line on the terrain, bright on the edge and fading inwards
                 var inward = -outward * outlineWidth;
@@ -86,15 +89,23 @@ public class SkillEffectView : MonoBehaviour
                     edge - along, edge + along, edge + along + inward, edge - along + inward,
                     line, line, clear, clear);
 
-                // Wall that is strongest at the line and fades both up and down
+                // Wall that is strongest at the line and fades both up and down.
+                // The downward part stops at the bottom of the board instead of hanging below it.
+                float surface = c.y - 0.06f;
+                float downLength = Mathf.Min(wallDown, surface - baseY);
                 var up = Vector3.up * wallUp;
-                var down = Vector3.down * wallDown;
                 AddQuad(vertices, colors, triangles,
                     edge - along, edge + along, edge + along + up, edge - along + up,
                     wall, wall, clear, clear);
-                AddQuad(vertices, colors, triangles,
-                    edge - along + down, edge + along + down, edge + along, edge - along,
-                    clear, clear, wall, wall);
+
+                if (downLength > 0.01f)
+                {
+                    var down = Vector3.down * downLength;
+                    var bottom = Color.Lerp(wall, clear, downLength / wallDown);
+                    AddQuad(vertices, colors, triangles,
+                        edge - along + down, edge + along + down, edge + along, edge - along,
+                        bottom, bottom, wall, wall);
+                }
             }
         }
 
