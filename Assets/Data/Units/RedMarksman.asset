@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
+  m_Name: RedMarksman
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  displayName: Red Marksman
+  maxHP: 7
+  attack: 3
+  moveRange: 3
+  attackRange: 2
+  attackPattern: {fileID: 11400000, guid: 51283870e0520ea45b92b3f1cfa66326, type: 2}
+  skill: {fileID: 11400000, guid: 8aa1dfb19f01e124ca6ccdc298a1676e, type: 2}
+  modelPrefab: {fileID: 4372106158951126838, guid: 2243d9fb894b3fc4aa09b400df1e4a40, type: 3}

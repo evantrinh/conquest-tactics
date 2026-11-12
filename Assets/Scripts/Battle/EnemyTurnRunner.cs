@@ -39,7 +39,7 @@ public class EnemyTurnRunner : MonoBehaviour
             if (battle.LevelOver) yield break;
             if (enemy == null || enemy.currentHP <= 0) continue;
 
-            var plan = EnemyAI.Decide(grid, enemy, battle.Units);
+            var plan = EnemyAI.Decide(grid, enemy, battle.Units, battle.SkillPoints.Get(enemy));
 
             if (plan.moveTo != enemy.gridPos)
             {
@@ -48,7 +48,11 @@ public class EnemyTurnRunner : MonoBehaviour
                 GameEvents.OnUnitMoved?.Invoke(enemy, plan.moveTo);
             }
 
-            if (plan.target != null && plan.target.currentHP > 0)
+            if (plan.skill != null)
+            {
+                yield return SkillCast.Run(enemy, plan.skill, plan.skillCenter);
+            }
+            else if (plan.target != null && plan.target.currentHP > 0)
             {
                 var target = plan.target;
                 yield return UnitMotion.Lunge(enemy, target, lungeDuration, lungeDistance,

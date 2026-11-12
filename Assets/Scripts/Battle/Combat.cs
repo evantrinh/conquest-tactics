@@ -31,9 +31,13 @@ public static class Combat
 
     public static int Damage(IGrid grid, Unit attacker, Vector2Int from, Unit target)
     {
-        int diff = grid.GetHeight(from) - grid.GetHeight(target.gridPos);
-        int bonus = Mathf.Clamp(diff * BonusPerLevel, 0, MaxHeightBonus);
-        return UnitStats.Attack(attacker) + bonus;
+        return UnitStats.Attack(attacker) + HeightBonus(grid, from, target.gridPos);
+    }
+
+    public static int HeightBonus(IGrid grid, Vector2Int from, Vector2Int to)
+    {
+        int diff = grid.GetHeight(from) - grid.GetHeight(to);
+        return Mathf.Clamp(diff * BonusPerLevel, 0, MaxHeightBonus);
     }
 
     public static bool HasEnemyInRange(IGrid grid, BattleManager battle, Unit unit)
@@ -55,6 +59,8 @@ public static class Combat
                 battle.OccupiedTiles(unit));
             if (reach.Count > 1) return true;
         }
+        var skill = UnitStats.Skill(unit);
+        if (skill != null && battle.CanCast(unit, skill) && Skills.HasUsefulTarget(grid, battle, unit, skill)) return true;
         return battle.CanAct(unit) && HasEnemyInRange(grid, battle, unit);
     }
 }

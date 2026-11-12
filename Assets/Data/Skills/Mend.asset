@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a605f0de660364fadc5fbb6d7d11e8, type: 3}
+  m_Name: Mend
+  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  displayName: Mend
+  effect: 1
+  targeting: 0
+  spCost: 2
+  actionCost: 1
+  castRange: {fileID: 11400000, guid: 090d604a4b43617459aef6ef9ac2f7ce, type: 2}
+  area: {fileID: 11400000, guid: 5a53d0aba3c04b64cac5be7b65c8c4c8, type: 2}
+  amount: 4
+  attackScale: 0
+  effectColor: {r: 0.1, g: 0.9, b: 0.85, a: 1}

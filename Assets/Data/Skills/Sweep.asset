@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5a605f0de660364fadc5fbb6d7d11e8, type: 3}
+  m_Name: Sweep
+  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  displayName: Sweep
+  effect: 0
+  targeting: 1
+  spCost: 3
+  actionCost: 1
+  castRange: {fileID: 0}
+  area: {fileID: 11400000, guid: a653adc791df9bc4fa740e13d029fc37, type: 2}
+  amount: 1
+  attackScale: 1.5
+  effectColor: {r: 1, g: 0.45, b: 0.2, a: 1}

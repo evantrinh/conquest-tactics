@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 // Systems talk through these events, so no script needs a reference to another system.
@@ -17,4 +18,8 @@ public static class GameEvents
     public static Action<Unit> OnUnitKilled;
     public static Action<Unit> OnUnitWaited;
     public static Action<int, int> OnActionPointsChanged;   // remaining, max
+    public static Action<Unit, int> OnUnitHealed;           // unit, amount restored
+    public static Action<Unit, SkillData, List<Vector2Int>> OnSkillUsed;   // caster, skill, tiles in the area
+    public static Action<Unit, int> OnSkillPointsChanged;   // unit, new total
+    public static Action<Unit, Unit> OnKillScored;          // killer, victim
 }

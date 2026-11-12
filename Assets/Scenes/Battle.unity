@@ -419,6 +419,9 @@ GameObject:
   - component: {fileID: 677714471}
   - component: {fileID: 677714473}
   - component: {fileID: 677714474}
+  - component: {fileID: 677714477}
+  - component: {fileID: 677714476}
+  - component: {fileID: 677714475}
   m_Layer: 0
   m_Name: BattleSystems
   m_TagString: Untagged
@@ -471,6 +474,7 @@ MonoBehaviour:
   moveColor: {r: 0.4, g: 0.85, b: 1, a: 0.55}
   attackColor: {r: 1, g: 0.3, b: 0.3, a: 0.5}
   enemyMoveColor: {r: 0.65, g: 0.65, b: 0.65, a: 0.6}
+  skillRangeColor: {r: 0.6, g: 0.4, b: 1, a: 0.55}
   overlayMaterial: {fileID: 0}
 --- !u!114 &677714469
 MonoBehaviour:
@@ -542,6 +546,9 @@ MonoBehaviour:
   flashTime: 0.15
   numberTime: 0.8
   numberRise: 1
+  damageColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  healColor: {r: 0.4, g: 1, b: 0.5, a: 1}
+  actionPointColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!114 &677714474
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -558,6 +565,48 @@ MonoBehaviour:
   lungeDuration: 0.25
   lungeDistance: 0.4
   pause: 0.4
+--- !u!114 &677714475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677714465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f328fd0ef0f84ae4e93631812e9f1970, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillEffectView
+  duration: 0.9
+  wallHeight: 1.4
+  glowAlpha: 0.5
+  wallAlpha: 0.85
+--- !u!114 &677714476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677714465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0987cd4fe7db94fb4b4075ef6f05cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillPoints
+  rules: {fileID: 11400000, guid: 426cba15c6afdaf4ba5fa2cc67d6664d, type: 2}
+--- !u!114 &677714477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677714465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 761078cb6f8c219478f10069630fe2d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActionPoints
+  rules: {fileID: 11400000, guid: a20b83b39dc50d84d8a45cf8880d8509, type: 2}
 --- !u!1 &1372748105
 GameObject:
   m_ObjectHideFlags: 0

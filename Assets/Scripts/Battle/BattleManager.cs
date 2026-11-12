@@ -25,12 +25,15 @@ public class BattleManager : MonoBehaviour
     public IReadOnlyList<Unit> Units => units;
 
     public ActionPoints Points { get; private set; }
+    public SkillPoints SkillPoints { get; private set; }
 
     void Awake()
     {
         Instance = this;
         Points = GetComponent<ActionPoints>();
         if (Points == null) Points = gameObject.AddComponent<ActionPoints>();
+        SkillPoints = GetComponent<SkillPoints>();
+        if (SkillPoints == null) SkillPoints = gameObject.AddComponent<SkillPoints>();
     }
     void OnEnable() { GameEvents.OnUnitSpawned += Register; }
     void OnDisable() { GameEvents.OnUnitSpawned -= Register; }
@@ -76,9 +79,16 @@ public class BattleManager : MonoBehaviour
         !LevelOver && !waited.Contains(unit) && !acted.Contains(unit) &&
         (ActionCost(unit) == 0 || Points.CanSpend(ActionCost(unit)));
 
+    public int SkillActionCost(Unit unit, SkillData skill) => unit.team == Team.Player ? skill.actionCost : 0;
+
+    public bool CanCast(Unit unit, SkillData skill) =>
+        skill != null && !LevelOver && !waited.Contains(unit) && !acted.Contains(unit) &&
+        SkillPoints.Has(unit, skill.spCost) &&
+        (SkillActionCost(unit, skill) == 0 || Points.CanSpend(SkillActionCost(unit, skill)));
+
     public bool CanSelect(Unit unit) =>
         unit != null && unit.team == CurrentTeam && CurrentTeam == Team.Player &&
-        (CanMove(unit) || CanAct(unit));
+        (CanMove(unit) || CanAct(unit) || CanCast(unit, UnitStats.Skill(unit)));
 
     public void MarkMoved(Unit unit)
     {
@@ -97,16 +107,59 @@ public class BattleManager : MonoBehaviour
         int damage = Combat.Damage(GridManager.Instance, attacker, target);
         Points.Spend(ActionCost(attacker));
         acted.Add(attacker);
+        ApplyDamage(attacker, target, damage);
+    }
+
+    void ApplyDamage(Unit attacker, Unit target, int damage)
+    {
         GameEvents.OnUnitAttacked?.Invoke(attacker, target, damage);
         target.currentHP -= damage;
         GameEvents.OnUnitDamaged?.Invoke(target);
-        if (target.currentHP <= 0) Kill(target);
+        if (target.currentHP <= 0) Kill(target, attacker);
     }
 
-    void Kill(Unit unit)
+    void Heal(Unit target, int amount)
+    {
+        int healed = Mathf.Min(amount, UnitStats.MaxHP(target) - target.currentHP);
+        if (healed <= 0) return;
+        target.currentHP += healed;
+        GameEvents.OnUnitHealed?.Invoke(target, healed);
+    }
+
+    // Pays for the skill and starts its effect. The result lands in ResolveCast.
+    public bool BeginCast(Unit caster, SkillData skill, Vector2Int center)
+    {
+        if (!CanCast(caster, skill)) return false;
+        var grid = GridManager.Instance;
+        Points.Spend(SkillActionCost(caster, skill));
+        SkillPoints.Spend(caster, skill.spCost);
+        acted.Add(caster);
+        GameEvents.OnSkillUsed?.Invoke(caster, skill, Skills.AreaTiles(grid, skill, center));
+        return true;
+    }
+
+    public void ResolveCast(Unit caster, SkillData skill, Vector2Int center)
+    {
+        var grid = GridManager.Instance;
+        if (skill.effect == SkillEffect.GrantAP)
+        {
+            Points.Grant(skill.amount);
+            return;
+        }
+
+        foreach (var target in Skills.Affected(grid, this, caster, skill, center))
+        {
+            int amount = Skills.Amount(grid, caster, caster.gridPos, skill, target);
+            if (skill.effect == SkillEffect.Damage) ApplyDamage(caster, target, amount);
+            else Heal(target, amount);
+        }
+    }
+
+    void Kill(Unit unit, Unit killer)
     {
         units.Remove(unit);
         GameEvents.OnUnitKilled?.Invoke(unit);
+        GameEvents.OnKillScored?.Invoke(killer, unit);
         foreach (var c in unit.GetComponentsInChildren<Collider>()) c.enabled = false;
         Destroy(unit.gameObject, 0.4f);
 

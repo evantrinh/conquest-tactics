@@ -8,6 +8,7 @@ public class ActionPoints : MonoBehaviour
     public ActionPointRules rules;
 
     public int Spent { get; private set; }
+    public int Bonus { get; private set; }
 
     public ActionPointRules Rules
     {
@@ -24,14 +25,14 @@ public class ActionPoints : MonoBehaviour
         {
             var grid = GridManager.Instance;
             if (grid != null && grid.level != null && grid.level.actionPointsOverride > 0)
-                return grid.level.actionPointsOverride;
+                return grid.level.actionPointsOverride + Bonus;
 
             int living = 0;
             var battle = BattleManager.Instance;
             if (battle != null)
                 foreach (var u in battle.Units)
                     if (u != null && u.team == Team.Player) living++;
-            return Mathf.CeilToInt(living * Rules.poolPerUnit) + Rules.flatBonus;
+            return Mathf.CeilToInt(living * Rules.poolPerUnit) + Rules.flatBonus + Bonus;
         }
     }
 
@@ -46,9 +47,18 @@ public class ActionPoints : MonoBehaviour
         GameEvents.OnActionPointsChanged?.Invoke(Remaining, Max);
     }
 
+    // Adds points to this turn's pool. They are gone when the pool refills.
+    public void Grant(int points)
+    {
+        if (points <= 0) return;
+        Bonus += points;
+        GameEvents.OnActionPointsChanged?.Invoke(Remaining, Max);
+    }
+
     public void Refill()
     {
         Spent = 0;
+        Bonus = 0;
         GameEvents.OnActionPointsChanged?.Invoke(Remaining, Max);
     }
 }

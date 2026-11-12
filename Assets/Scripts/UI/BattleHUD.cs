@@ -76,7 +76,7 @@ public class BattleHUD : MonoBehaviour
         // Selected unit panel
         if (selected != null && selected.data != null)
         {
-            panel = new Rect(10, h - 180, 270, 170);
+            panel = new Rect(10, h - 260, 270, 250);
             GUI.Box(panel, "Selected unit");
             GUILayout.BeginArea(new Rect(panel.x + 12, panel.y + 28, panel.width - 24, panel.height - 34));
             GUILayout.Label(selected.data.displayName + "  (" + selected.team + ")");
@@ -91,8 +91,27 @@ public class BattleHUD : MonoBehaviour
                 string act = !battle.CanAct(selected) ? "No action" : "Attack " + battle.ActionCost(selected) + " AP";
                 GUILayout.Label(move + "   " + act);
             }
-            GUI.enabled = ours && battle != null && battle.CurrentTeam == Team.Player && !busy && !battle.LevelOver;
-            if (ours && GUILayout.Button("Wait")) BattleInput.Instance.WaitSelected();
+            var skill = UnitStats.Skill(selected);
+            if (skill != null && battle != null)
+                GUILayout.Label("SP " + battle.SkillPoints.Get(selected) + " / " + battle.SkillPoints.Cap + "   " + skill.displayName + " costs " + skill.spCost);
+
+            bool playerTurn = ours && battle != null && battle.CurrentTeam == Team.Player && !busy && !battle.LevelOver;
+            var input = BattleInput.Instance;
+            GUI.enabled = playerTurn;
+            if (ours && skill != null)
+            {
+                if (input.IsTargeting)
+                {
+                    if (GUILayout.Button("Cancel skill")) input.CancelTargeting();
+                }
+                else
+                {
+                    GUI.enabled = playerTurn && battle.CanCast(selected, skill);
+                    if (GUILayout.Button(skill.displayName)) input.BeginTargeting();
+                    GUI.enabled = playerTurn;
+                }
+            }
+            if (ours && GUILayout.Button("Wait")) input.WaitSelected();
             GUI.enabled = true;
             GUILayout.EndArea();
         }
