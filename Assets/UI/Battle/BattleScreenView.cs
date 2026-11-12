@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
-// The top bar, the roster and the result banner of the battle screen.
+// The top bar, the roster, End turn and the result banner of the battle screen.
 // BattleInput asks BlocksPoint so that clicks on the interface do not also click the board.
 [RequireComponent(typeof(UIDocument))]
 public class BattleScreenView : MonoBehaviour
@@ -14,7 +14,7 @@ public class BattleScreenView : MonoBehaviour
     public string menuSceneName = "Menu";
 
     VisualElement root, roster;
-    Label turnLabel, apLabel, banner;
+    Label levelLabel, turnLabel, apLabel, banner;
     Pips apPips;
     Button endTurnButton, menuButton;
     readonly Dictionary<Unit, UnitChip> chips = new Dictionary<Unit, UnitChip>();
@@ -26,6 +26,7 @@ public class BattleScreenView : MonoBehaviour
     {
         root = GetComponent<UIDocument>().rootVisualElement;
         roster = root.Q<VisualElement>("roster");
+        levelLabel = root.Q<Label>("levelLabel");
         turnLabel = root.Q<Label>("turnLabel");
         apLabel = root.Q<Label>("apLabel");
         banner = root.Q<Label>("banner");
@@ -86,9 +87,12 @@ public class BattleScreenView : MonoBehaviour
         if (battle == null) return;
         var input = BattleInput.Instance;
 
+        var level = GridManager.Instance == null ? null : GridManager.Instance.level;
+        levelLabel.text = level == null ? "" : (string.IsNullOrEmpty(level.levelName) ? level.name : level.levelName);
+
         bool playerTurn = battle.CurrentTeam == Team.Player && !battle.LevelOver;
-        turnLabel.text = (battle.CurrentTeam == Team.Player ? "Your turn" : "Enemy turn") + "   Turn " + battle.TurnNumber;
-        apLabel.text = "AP " + battle.Points.Remaining + " / " + battle.Points.Max;
+        turnLabel.text = "Turn " + battle.TurnNumber + "   " + (battle.CurrentTeam == Team.Player ? "Your turn" : "Enemy turn");
+        apLabel.text = "Action points " + battle.Points.Remaining + " / " + battle.Points.Max;
         apPips.SetPips(battle.Points.Remaining, battle.Points.Max);
         endTurnButton.SetEnabled(playerTurn && !input.IsMoving);
 
@@ -98,8 +102,7 @@ public class BattleScreenView : MonoBehaviour
             var unit = pair.Key;
             if (unit == null) { gone.Add(unit); continue; }
 
-            string state = battle.CanSelect(unit) ? "Ready" : "Done";
-            pair.Value.Show(unit.data.displayName, unit.currentHP, UnitStats.MaxHP(unit), state);
+            pair.Value.Show(unit.data.displayName, unit.currentHP, UnitStats.MaxHP(unit), battle.CanSelect(unit));
             pair.Value.SetSelected(input.Selected == unit);
         }
         foreach (var unit in gone)

@@ -5,17 +5,25 @@
     <ui:Style src="../Widgets/UnitChip/UnitChip.uss" />
     <ui:Style src="Battle.uss" />
     <ui:Template name="UnitCard" src="../UnitCard/UnitCard.uxml" />
+    <ui:Template name="ActionFan" src="../ActionFan/ActionFan.uxml" />
     <ui:VisualElement name="battleRoot" class="battle-root" picking-mode="Ignore">
         <ui:VisualElement name="topBar" class="top-bar">
-            <ui:Label name="turnLabel" class="top-bar__item" />
-            <c:Pips name="apPips" class="top-bar__item" />
-            <ui:Label name="apLabel" />
-            <ui:VisualElement class="spacer" picking-mode="Ignore" />
-            <ui:Button name="endTurnButton" text="End turn" class="top-bar__button" />
-            <ui:Button name="menuButton" text="Menu" class="top-bar__button" />
+            <ui:VisualElement class="top-bar__side" picking-mode="Ignore">
+                <ui:Label name="levelLabel" class="top-bar__title" />
+                <ui:Label name="turnLabel" class="top-bar__subtitle" />
+            </ui:VisualElement>
+            <ui:VisualElement class="top-bar__center" picking-mode="Ignore">
+                <c:Pips name="apPips" class="pips--diamond" />
+                <ui:Label name="apLabel" class="top-bar__subtitle" />
+            </ui:VisualElement>
+            <ui:VisualElement class="top-bar__side top-bar__side--right">
+                <ui:Button name="menuButton" text="Menu" class="top-bar__button" />
+            </ui:VisualElement>
         </ui:VisualElement>
         <ui:Label name="banner" class="banner" picking-mode="Ignore" />
         <ui:VisualElement name="roster" class="roster" picking-mode="Ignore" />
+        <ui:Button name="endTurnButton" text="End turn" class="end-turn" />
         <ui:Instance template="UnitCard" picking-mode="Ignore" />
+        <ui:Instance template="ActionFan" picking-mode="Ignore" />
     </ui:VisualElement>
 </ui:UXML>

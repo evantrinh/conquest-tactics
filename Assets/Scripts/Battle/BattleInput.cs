@@ -99,6 +99,13 @@ public class BattleInput : MonoBehaviour
         return true;
     }
 
+    // Called by the close button. Backs out of aiming first, then clears the selection.
+    public void Cancel()
+    {
+        if (state == State.Targeting) CancelTargeting();
+        else if (state == State.Selected || state == State.Inspecting) Deselect();
+    }
+
     // Called by the roster. Commandable units are selected, the rest are inspected.
     public void Choose(Unit unit)
     {

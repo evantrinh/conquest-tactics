@@ -3,15 +3,14 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 // Fills the unit card from the selected unit. Selection events show and hide it,
-// then it reads the battle state every frame so the numbers and buttons stay current.
+// then it reads the battle state every frame so the numbers stay current.
 [RequireComponent(typeof(UIDocument))]
 public class UnitCardView : MonoBehaviour
 {
-    VisualElement card, skillBlock, buttons;
-    Label nameLabel, teamLabel, spLabel, attackStat, moveStat, rangeStat, statusLabel, skillName, skillDescription;
+    VisualElement card, skillBlock;
+    Label portrait, nameLabel, subtitle, attackStat, moveStat, rangeStat, statusLabel, skillName, skillDescription;
     HpBar hpBar;
-    Pips spPips;
-    Button skillButton, waitButton;
+    SkillRing spRing;
     Unit shown;
 
     void OnEnable()
@@ -19,10 +18,9 @@ public class UnitCardView : MonoBehaviour
         var root = GetComponent<UIDocument>().rootVisualElement;
         card = root.Q<VisualElement>("unitCard");
         skillBlock = root.Q<VisualElement>("skillBlock");
-        buttons = root.Q<VisualElement>("buttons");
+        portrait = root.Q<Label>("portrait");
         nameLabel = root.Q<Label>("unitName");
-        teamLabel = root.Q<Label>("unitTeam");
-        spLabel = root.Q<Label>("spLabel");
+        subtitle = root.Q<Label>("unitSubtitle");
         attackStat = root.Q<Label>("attackStat");
         moveStat = root.Q<Label>("moveStat");
         rangeStat = root.Q<Label>("rangeStat");
@@ -30,20 +28,14 @@ public class UnitCardView : MonoBehaviour
         skillName = root.Q<Label>("skillName");
         skillDescription = root.Q<Label>("skillDescription");
         hpBar = root.Q<HpBar>("hpBar");
-        spPips = root.Q<Pips>("spPips");
-        skillButton = root.Q<Button>("skillButton");
-        waitButton = root.Q<Button>("waitButton");
+        spRing = root.Q<SkillRing>("spRing");
 
-        skillButton.clicked += OnSkillClicked;
-        waitButton.clicked += OnWaitClicked;
         GameEvents.OnUnitSelected += Show;
         GameEvents.OnSelectionCleared += Hide;
     }
 
     void OnDisable()
     {
-        skillButton.clicked -= OnSkillClicked;
-        waitButton.clicked -= OnWaitClicked;
         GameEvents.OnUnitSelected -= Show;
         GameEvents.OnSelectionCleared -= Hide;
     }
@@ -70,18 +62,15 @@ public class UnitCardView : MonoBehaviour
     {
         var unit = shown;
         var battle = BattleManager.Instance;
-        var input = BattleInput.Instance;
         bool ours = unit.team == Team.Player;
-        bool playerTurn = battle.CurrentTeam == Team.Player && !battle.LevelOver;
         var skill = UnitStats.Skill(unit);
 
-        nameLabel.text = unit.data.displayName;
-        teamLabel.text = unit.team.ToString();
+        string unitName = unit.data.displayName;
+        portrait.text = string.IsNullOrEmpty(unitName) ? "" : unitName.Substring(0, 1);
+        nameLabel.text = unitName;
+        subtitle.text = ours ? unit.team + "  " + (battle.CanSelect(unit) ? "Ready" : "Done") : unit.team.ToString();
         hpBar.SetHp(unit.currentHP, UnitStats.MaxHP(unit));
-
-        int sp = battle.SkillPoints.Get(unit);
-        spLabel.text = "SP " + sp + " / " + battle.SkillPoints.Cap;
-        spPips.SetPips(sp, battle.SkillPoints.Cap);
+        spRing.SetPoints(battle.SkillPoints.Get(unit), battle.SkillPoints.Cap);
 
         attackStat.text = "Attack " + UnitStats.Attack(unit);
         moveStat.text = "Move " + UnitStats.MoveRange(unit);
@@ -97,32 +86,11 @@ public class UnitCardView : MonoBehaviour
         }
 
         skillBlock.EnableInClassList("hidden", skill == null);
-        skillButton.EnableInClassList("hidden", skill == null);
         if (skill != null)
         {
             string cost = skill.spCost + " SP" + (skill.actionCost > 0 && ours ? "   " + skill.actionCost + " AP" : "");
             skillName.text = skill.displayName + "   " + cost;
             skillDescription.text = skill.description;
         }
-
-        buttons.EnableInClassList("hidden", !ours);
-        if (!ours) return;
-
-        bool free = playerTurn && !input.IsMoving;
-        if (skill != null)
-        {
-            skillButton.text = input.IsTargeting ? "Cancel" : skill.displayName;
-            skillButton.SetEnabled(free && (input.IsTargeting || (input.IsSelecting && battle.CanCast(unit, skill))));
-        }
-        waitButton.SetEnabled(free && input.IsSelecting);
     }
-
-    void OnSkillClicked()
-    {
-        var input = BattleInput.Instance;
-        if (input.IsTargeting) input.CancelTargeting();
-        else input.BeginTargeting();
-    }
-
-    void OnWaitClicked() => BattleInput.Instance.WaitSelected();
 }

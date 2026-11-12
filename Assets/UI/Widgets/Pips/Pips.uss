@@ -13,3 +13,14 @@
 .pips__pip--filled {
     background-color: var(--c-fill);
 }
+
+.pips--diamond .pips__pip {
+    width: 12px;
+    height: 12px;
+    margin-right: 12px;
+    rotate: 45deg;
+}
+
+.pips--diamond .pips__pip--filled {
+    background-color: var(--c-ready);
+}

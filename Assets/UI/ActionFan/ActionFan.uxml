@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../Shared/Theme.uss" />
+    <ui:Style src="ActionFan.uss" />
+    <ui:VisualElement name="fan" class="fan hidden" picking-mode="Ignore">
+        <ui:Button name="skillButton" text="Skill" class="fan__button fan__skill" />
+        <ui:Label name="skillCost" class="fan__cost" picking-mode="Ignore" />
+        <ui:Button name="waitButton" text="Wait" class="fan__button fan__wait" />
+        <ui:Button name="closeButton" text="x" class="fan__button fan__close" />
+    </ui:VisualElement>
+</ui:UXML>
