@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Outlines a skill's area. A glowing line follows the edge of the area along the terrain, a soft wall fades
-// up into the air and down the side of the terrain from that line, and the tiles inside glow faintly.
+// up into the air and down the cliff beside it where the terrain steps down, and the tiles inside glow faintly.
 public class SkillEffectView : MonoBehaviour
 {
     public float duration = 0.9f;
@@ -63,7 +63,6 @@ public class SkillEffectView : MonoBehaviour
         var fill = new Color(color.r, color.g, color.b, fillAlpha);
         var line = new Color(color.r, color.g, color.b, outlineAlpha);
         var wall = new Color(color.r, color.g, color.b, wallAlpha);
-        float baseY = grid.transform.position.y;
 
         foreach (var p in tiles)
         {
@@ -89,10 +88,13 @@ public class SkillEffectView : MonoBehaviour
                     edge - along, edge + along, edge + along + inward, edge - along + inward,
                     line, line, clear, clear);
 
-                // Wall that is strongest at the line and fades both up and down.
-                // The downward part stops at the bottom of the board instead of hanging below it.
+                // Wall that is strongest at the line and fades up. It also fades down, but only where the
+                // terrain steps down next to the area, and never lower than the tile on the other side.
+                // At the edge of the map and beside taller tiles it starts on top of the tile.
                 float surface = c.y - 0.06f;
-                float downLength = Mathf.Min(wallDown, surface - baseY);
+                float downLength = 0f;
+                if (grid.InBounds(p + d))
+                    downLength = Mathf.Min(wallDown, surface - grid.TileToWorld(p + d).y);
                 var up = Vector3.up * wallUp;
                 AddQuad(vertices, colors, triangles,
                     edge - along, edge + along, edge + along + up, edge - along + up,
