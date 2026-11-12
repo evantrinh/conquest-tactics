@@ -79,7 +79,7 @@ public class SkillEffectView : MonoBehaviour
                 if (set.Contains(p + d)) continue;
 
                 var outward = new Vector3(d.x, 0, d.y);
-                var along = new Vector3(d.y, 0, d.x) * 0.5f;
+                var along = new Vector3(d.y, 0, d.x) * (0.5f + FaceGap);   // reaches the neighbouring wall, so corners have no gap
                 var edge = c + outward * (0.5f + FaceGap);
 
                 // Glowing line on the terrain, bright on the edge and fading inwards
