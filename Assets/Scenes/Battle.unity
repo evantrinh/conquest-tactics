@@ -578,9 +578,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillEffectView
   duration: 0.9
-  wallHeight: 1.4
-  glowAlpha: 0.5
-  wallAlpha: 0.85
+  outlineWidth: 0.14
+  outlineAlpha: 1
+  wallUp: 0.5
+  wallDown: 0.5
+  wallStrength: 0.35
+  fillAlpha: 0.18
+  effectMaterial: {fileID: 2100000, guid: 7f4dc55da87902645a37ef21d16cc39d, type: 2}
 --- !u!114 &677714476
 MonoBehaviour:
   m_ObjectHideFlags: 0

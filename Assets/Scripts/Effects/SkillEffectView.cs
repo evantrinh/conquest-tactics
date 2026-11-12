@@ -9,12 +9,13 @@ public class SkillEffectView : MonoBehaviour
     public float duration = 0.9f;
     public float outlineWidth = 0.14f;
     public float outlineAlpha = 1f;
-    public float wallUp = 0.9f;
-    public float wallDown = 0.9f;
-    public float wallAlpha = 0.45f;
+    public float wallUp = 0.5f;
+    public float wallDown = 0.5f;
+    public float wallStrength = 0.35f;
     public float fillAlpha = 0.18f;
 
-    const float FaceGap = 0.015f;   // keeps the wall just off the terrain face so they do not flicker
+    [Tooltip("Optional. Leave empty to build the material from the shader by name.")]
+    public Material effectMaterial;
 
     static readonly Vector2Int[] Dirs = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
 
@@ -33,7 +34,7 @@ public class SkillEffectView : MonoBehaviour
         var mesh = BuildMesh(color, tiles);
         go.AddComponent<MeshFilter>().sharedMesh = mesh;
         var renderer = go.AddComponent<MeshRenderer>();
-        var material = new Material(Shader.Find("Sprites/Default"));
+        var material = effectMaterial != null ? new Material(effectMaterial) : new Material(Shader.Find("Contour/Skill Effect"));
         renderer.sharedMaterial = material;
         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         renderer.receiveShadows = false;
@@ -62,7 +63,7 @@ public class SkillEffectView : MonoBehaviour
         var clear = new Color(color.r, color.g, color.b, 0f);
         var fill = new Color(color.r, color.g, color.b, fillAlpha);
         var line = new Color(color.r, color.g, color.b, outlineAlpha);
-        var wall = new Color(color.r, color.g, color.b, wallAlpha);
+        var wall = new Color(color.r, color.g, color.b, wallStrength);
 
         foreach (var p in tiles)
         {
@@ -79,14 +80,30 @@ public class SkillEffectView : MonoBehaviour
                 if (set.Contains(p + d)) continue;
 
                 var outward = new Vector3(d.x, 0, d.y);
-                var along = new Vector3(d.y, 0, d.x) * (0.5f + FaceGap);   // reaches the neighbouring wall, so corners have no gap
-                var edge = c + outward * (0.5f + FaceGap);
+                var along = new Vector3(d.y, 0, d.x) * 0.5f;
+                var edge = c + outward * 0.5f;
 
                 // Glowing line on the terrain, bright on the edge and fading inwards
                 var inward = -outward * outlineWidth;
                 AddQuad(vertices, colors, triangles,
                     edge - along, edge + along, edge + along + inward, edge - along + inward,
                     line, line, clear, clear);
+
+                // Where the terrain steps beside this edge, the outline climbs the side of the taller tile
+                foreach (var n in new[] { new Vector2Int(d.y, d.x), new Vector2Int(-d.y, -d.x) })
+                {
+                    var q = p + n;
+                    if (!set.Contains(q) || set.Contains(q + d)) continue;
+
+                    float step = c.y - (grid.TileToWorld(q).y + 0.06f);
+                    if (step <= 0.01f) continue;
+
+                    var corner = c + new Vector3(n.x, 0, n.y) * 0.5f + outward * 0.5f;
+                    var drop = Vector3.down * step;
+                    AddQuad(vertices, colors, triangles,
+                        corner + drop, corner, corner + inward, corner + inward + drop,
+                        line, line, clear, clear);
+                }
 
                 // Wall that is strongest at the line and fades up. It also fades down, but only where the
                 // terrain steps down next to the area, and never lower than the tile on the other side.
