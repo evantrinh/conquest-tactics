@@ -57,9 +57,12 @@ public static class UnitMotion
         Vector3 peak = from + dir.normalized * distance;
         float half = duration * 0.5f;
 
-        // Face the target for the attack
+    // Face the target for the attack
         if (dir.sqrMagnitude > 0.0001f)
             attacker.transform.rotation = FaceRotation(dir);
+
+        var anim = attacker.GetComponentInChildren<Animator>();
+        if (anim != null) anim.SetBool("IsAttacking", true);
 
         for (float t = 0f; t < half; t += Time.deltaTime)
         {
@@ -74,5 +77,7 @@ public static class UnitMotion
             yield return null;
         }
         attacker.transform.position = from;
+
+        if (anim != null) anim.SetBool("IsAttacking", false);
     }
 }
