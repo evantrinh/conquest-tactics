@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6b09c1ea1d4e30d4280224b592e9dcc6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/prefabs/WK_Light_Infantry_B.prefab
+  uploadId: 981054

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fe5ef6405000a4940858c85ea0935c9b
+timeCreated: 1504003963
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/sample_scene/scene_ground.mat
+  uploadId: 981054

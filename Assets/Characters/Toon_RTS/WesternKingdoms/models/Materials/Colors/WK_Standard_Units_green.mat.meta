@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f24d011a453b2d844956f9d487ac176d
+timeCreated: 1503948529
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/models/Materials/Colors/WK_Standard_Units_green.mat
+  uploadId: 981054

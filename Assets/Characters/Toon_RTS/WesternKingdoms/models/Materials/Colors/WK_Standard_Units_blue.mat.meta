@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5070db5067422e041a6bb8c1681020b8
+timeCreated: 1503948514
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/models/Materials/Colors/WK_Standard_Units_blue.mat
+  uploadId: 981054

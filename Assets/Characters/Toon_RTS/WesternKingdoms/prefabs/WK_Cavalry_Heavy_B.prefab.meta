@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7d5ac62e6bae0b241a1cd07d23d6fecd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/prefabs/WK_Cavalry_Heavy_B.prefab
+  uploadId: 981054
