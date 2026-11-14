@@ -486,6 +486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BattleManager
   autoSkipEnemyTurn: 1
   enemyTurnDelay: 1
+  deathDuration: 1.5
 --- !u!114 &677714470
 MonoBehaviour:
   m_ObjectHideFlags: 0

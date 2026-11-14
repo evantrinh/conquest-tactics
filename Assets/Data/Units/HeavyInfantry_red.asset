@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: TestUnit2
+  m_Name: HeavyInfantry_red
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Test Unit 2
-  maxHP: 3
+  displayName: EnemyUnit
+  maxHP: 5
   attack: 3
-  moveRange: 4
-  attackRange: 3
-  modelPrefab: {fileID: 6588693489270358354, guid: 17d9bd0a63ee3754ca15040f65c5fdc1, type: 3}
+  moveRange: 3
+  attackRange: 1
+  attackPattern: {fileID: 0}
+  modelPrefab: {fileID: 4181782949725422952, guid: 5d69e27a33c769545b2b4bcc87a51ce8, type: 3}
