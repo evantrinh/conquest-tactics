@@ -16,10 +16,16 @@ public class LevelData : ScriptableObject
 {
     public string levelName;
 
-    [Header("Authoring: type the level here, then press Apply Layout")]
-    [Tooltip("One row per line, cells separated by spaces. Each cell is a type letter plus a height digit, for example g1 or w0. The first line is y = 0.")]
+    [Header("Type out the tile type and its corresponding height, then press \"Apply Layout\" to actually implement the edit.")]
+    [Tooltip("One row per line, cells separated by spaces. Each cell is a type letter plus a height digit, for example g1 or w0. w0 is a water tile type with a height of 0 or the lowest height possible for any tile. g1 is a grass tile type with a height of 1 that is a level higher than 0, and so on so forth. The first line is y = 0.")]
     [TextArea(8, 16)] public string layout;
 
+    [Header("Drop in any weather prefabs for the specific map")]
+    [Tooltip("The weather should align with the theme of the map and based on what types of tiles it has, or go wild. It can also be left out null with no weather at all.")]
+    public GameObject weatherEffect = null;
+
+    [Header("Add and layout the specific army units on the map")]
+    [Tooltip("Either add or delete a unit to be spawned. Each spawned unit intended to be played on the map must have a model dragged into it, x-y coordinate position on the map not exceeding its boundaries, and a drop down to put it in the player or enemy side.")]
     public SpawnEntry[] spawns;
 
     [Tooltip("Action points per player turn. Zero uses the formula in the rules asset.")]
