@@ -29,28 +29,28 @@ MonoBehaviour:
 
     g0 g0 g0 w0 g0 g0 g0 g0'
   spawns:
-  - unit: {fileID: 11400000, guid: 9fcc6987e27ac93459173cc057473cee, type: 2}
+  - unit: {fileID: 11400000, guid: 013eae7c98a9ec24283cc8b3d7f2b3a8, type: 2}
     position: {x: 1, y: 3}
     team: 0
-  - unit: {fileID: 11400000, guid: 3951030f422c50a499756820247c78f4, type: 2}
+  - unit: {fileID: 11400000, guid: 3a22bd9a7fc5dac47bd6dc36bbde5cf2, type: 2}
     position: {x: 2, y: 2}
     team: 0
-  - unit: {fileID: 11400000, guid: 7ef39d9043848b241902133957c9f1da, type: 2}
+  - unit: {fileID: 11400000, guid: 226efa757f3b06b40b360c540f2d423d, type: 2}
     position: {x: 2, y: 4}
     team: 0
-  - unit: {fileID: 11400000, guid: 92fdea9e6bed8b846ad097763b7c432b, type: 2}
+  - unit: {fileID: 11400000, guid: 0ed7b0a6520d84b4e8cab424de2bf18f, type: 2}
     position: {x: 1, y: 5}
     team: 0
-  - unit: {fileID: 11400000, guid: 1c5b1786e2a047545bd90fe117840a93, type: 2}
+  - unit: {fileID: 11400000, guid: ec34cde7f9d51934494c0a51e514f218, type: 2}
     position: {x: 6, y: 3}
     team: 1
-  - unit: {fileID: 11400000, guid: a548f39219803df4080c5b2835f9f131, type: 2}
+  - unit: {fileID: 11400000, guid: 211feca623d82194687bb65947c650b0, type: 2}
     position: {x: 6, y: 4}
     team: 1
-  - unit: {fileID: 11400000, guid: 93693639f6ea01047b0b913ac0e76681, type: 2}
+  - unit: {fileID: 11400000, guid: 03abeaffff3646b4787d5a17f5754826, type: 2}
     position: {x: 7, y: 3}
     team: 1
-  - unit: {fileID: 11400000, guid: 3c2a6161ef9589a46b98733f25d89f65, type: 2}
+  - unit: {fileID: 11400000, guid: e2aa6e6f21584e54e873f30276cff2ec, type: 2}
     position: {x: 5, y: 5}
     team: 1
   actionPointsOverride: 0
