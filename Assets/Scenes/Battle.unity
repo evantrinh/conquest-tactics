@@ -421,6 +421,7 @@ GameObject:
   - component: {fileID: 677714477}
   - component: {fileID: 677714476}
   - component: {fileID: 677714475}
+  - component: {fileID: 677714478}
   m_Layer: 0
   m_Name: BattleSystems
   m_TagString: Untagged
@@ -598,6 +599,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionPoints
   rules: {fileID: 11400000, guid: a20b83b39dc50d84d8a45cf8880d8509, type: 2}
+--- !u!114 &677714478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677714465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8373ebd91bd04241a1b4a67dedf7bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitAnimationEvents
 --- !u!1 &1372748105
 GameObject:
   m_ObjectHideFlags: 0

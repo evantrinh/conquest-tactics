@@ -16,6 +16,7 @@ MonoBehaviour:
   effect: 0
   targeting: 1
   description: Hits every enemy in the 8 tiles around the caster.
+  castAnimation: 0
   spCost: 3
   actionCost: 1
   castRange: {fileID: 0}

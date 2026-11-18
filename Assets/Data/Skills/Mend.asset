@@ -16,6 +16,7 @@ MonoBehaviour:
   effect: 1
   targeting: 0
   description: Restores HP to every ally in a 5x5 circle. Aim it up to 2 tiles away.
+  castAnimation: 0
   spCost: 2
   actionCost: 1
   castRange: {fileID: 11400000, guid: 090d604a4b43617459aef6ef9ac2f7ce, type: 2}

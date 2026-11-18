@@ -4,6 +4,9 @@ public enum SkillEffect { Damage, Heal, GrantAP }
 
 public enum SkillTargeting { Tile, Self }
 
+// Which skill state of the caster's Animator plays. Each controller maps these to its own clips.
+public enum SkillAnimation { Skill_A, Skill_B, Skill_C }
+
 // One skill. Damage hits enemies in the area, Heal restores allies in the area, GrantAP adds action points for the turn.
 [CreateAssetMenu(menuName = "Game/Skill Data")]
 public class SkillData : ScriptableObject
@@ -12,6 +15,7 @@ public class SkillData : ScriptableObject
     public SkillEffect effect;
     public SkillTargeting targeting = SkillTargeting.Tile;
     [TextArea(2, 4)] public string description;
+    public SkillAnimation castAnimation;
 
     [Tooltip("Skill points spent by the caster.")]
     public int spCost = 2;
