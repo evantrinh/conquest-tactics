@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 912b814bec92ddb4e98e918a15426109
+timeCreated: 1469322139
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/models/Materials/WK_Horse_A.mat
+  uploadId: 981054

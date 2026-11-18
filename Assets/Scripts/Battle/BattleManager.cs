@@ -14,6 +14,7 @@ public class BattleManager : MonoBehaviour
     [Tooltip("Turn this off once enemy AI ends its own turn by calling EndTurn.")]
     public bool autoSkipEnemyTurn = true;
     public float enemyTurnDelay = 1f;
+    public float deathDuration = 1.5f;
 
     readonly List<Unit> units = new List<Unit>();
     readonly HashSet<Unit> moved = new HashSet<Unit>();
@@ -25,6 +26,8 @@ public class BattleManager : MonoBehaviour
     public IReadOnlyList<Unit> Units => units;
 
     public ActionPoints Points { get; private set; }
+
+    
 
     void Awake()
     {
@@ -108,7 +111,11 @@ public class BattleManager : MonoBehaviour
         units.Remove(unit);
         GameEvents.OnUnitKilled?.Invoke(unit);
         foreach (var c in unit.GetComponentsInChildren<Collider>()) c.enabled = false;
-        Destroy(unit.gameObject, 0.4f);
+        
+        var anim = unit.GetComponentInChildren<Animator>();
+        if (anim != null) anim.SetBool("IsDead", true);
+
+        Destroy(unit.gameObject,deathDuration);
 
         bool playersLeft = false, enemiesLeft = false;
         foreach (var u in units)

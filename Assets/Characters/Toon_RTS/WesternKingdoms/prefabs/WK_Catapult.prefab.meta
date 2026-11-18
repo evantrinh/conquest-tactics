@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 6e11dc0269b03fc42bf8720d4403af8e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/prefabs/WK_Catapult.prefab
+  uploadId: 981054

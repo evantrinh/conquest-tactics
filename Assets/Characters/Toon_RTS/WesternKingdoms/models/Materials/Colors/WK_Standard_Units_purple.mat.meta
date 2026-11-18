@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8a171cf0e2e91304bba5ee360bf75e15
+timeCreated: 1503948536
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/models/Materials/Colors/WK_Standard_Units_purple.mat
+  uploadId: 981054

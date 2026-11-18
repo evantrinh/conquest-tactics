@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f9fa2d379c31a5046bbfc79b2411ce38
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/sample_scene/ToonRTS_WesternKingdoms_SampleScene/LightingData.asset
+  uploadId: 981054
