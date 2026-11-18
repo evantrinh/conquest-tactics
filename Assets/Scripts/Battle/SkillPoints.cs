@@ -9,6 +9,7 @@ public class SkillPoints : MonoBehaviour
 
     readonly Dictionary<Unit, int> points = new Dictionary<Unit, int>();
     readonly HashSet<Unit> active = new HashSet<Unit>();
+    readonly HashSet<Unit> idlePaid = new HashSet<Unit>();
     bool started;
 
     public SkillPointRules Rules
@@ -40,6 +41,7 @@ public class SkillPoints : MonoBehaviour
         GameEvents.OnUnitMoved += OnMoved;
         GameEvents.OnUnitAttacked += OnAttacked;
         GameEvents.OnSkillUsed += OnSkillUsed;
+        GameEvents.OnUnitWaited += OnWaited;
         GameEvents.OnKillScored += OnKillScored;
         GameEvents.OnTurnChanged += OnTurnChanged;
     }
@@ -51,15 +53,23 @@ public class SkillPoints : MonoBehaviour
         GameEvents.OnUnitMoved -= OnMoved;
         GameEvents.OnUnitAttacked -= OnAttacked;
         GameEvents.OnSkillUsed -= OnSkillUsed;
+        GameEvents.OnUnitWaited -= OnWaited;
         GameEvents.OnKillScored -= OnKillScored;
         GameEvents.OnTurnChanged -= OnTurnChanged;
     }
 
     void OnSpawned(Unit unit) => Set(unit, Mathf.Min(Rules.cap, Rules.startingPoints));
-    void OnKilled(Unit unit) { points.Remove(unit); active.Remove(unit); }
+    void OnKilled(Unit unit) { points.Remove(unit); active.Remove(unit); idlePaid.Remove(unit); }
     void OnMoved(Unit unit, Vector2Int _) => active.Add(unit);
     void OnAttacked(Unit attacker, Unit target, int damage) => active.Add(attacker);
     void OnSkillUsed(Unit caster, SkillData skill, List<Vector2Int> tiles) => active.Add(caster);
+    // A unit that waits without having moved or acted gets its idle bonus now, not when the turn ends
+    void OnWaited(Unit unit)
+    {
+        if (active.Contains(unit) || !idlePaid.Add(unit)) return;
+        Add(unit, Rules.idleBonus);
+    }
+
     void OnKillScored(Unit killer, Unit victim) { if (killer != null) Add(killer, Rules.killBonus); }
 
     // The team that just finished gives idle bonuses, the team that is starting gains its turn points
@@ -72,11 +82,12 @@ public class SkillPoints : MonoBehaviour
         {
             var finished = starting == Team.Player ? Team.Enemy : Team.Player;
             foreach (var u in battle.Units)
-                if (u != null && u.team == finished && !active.Contains(u)) Add(u, Rules.idleBonus);
+                if (u != null && u.team == finished && !active.Contains(u) && !idlePaid.Contains(u)) Add(u, Rules.idleBonus);
             foreach (var u in battle.Units)
                 if (u != null && u.team == starting) Add(u, Rules.gainPerTurn);
         }
         started = true;
         active.Clear();
+        idlePaid.Clear();
     }
 }
