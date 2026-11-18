@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f750c67c7df92664788bc2d016a200a6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/prefabs/WK_Cavalry_Archer_A.prefab
+  uploadId: 981054

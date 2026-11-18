@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e70460ce9ec478f4187568e5ffab3c14
+timeCreated: 1503948545
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/models/Materials/Colors/WK_Standard_Units_tan.mat
+  uploadId: 981054

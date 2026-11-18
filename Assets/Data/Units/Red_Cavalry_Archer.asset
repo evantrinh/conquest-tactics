@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
+  m_Name: Red_Cavalry_Archer
+  m_EditorClassIdentifier: Assembly-CSharp::UnitData
+  displayName: 
+  maxHP: 15
+  attack: 3
+  moveRange: 5
+  attackRange: 8
+  attackPattern: {fileID: 0}
+  modelPrefab: {fileID: 4403840279280710734, guid: b83ab2f556de25c45b3d880f3bcdf994, type: 3}

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 28a58d02c5e9ad54f939146f3374bb6c
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/prefabs/WK_Cavalry_Mage_B.prefab
+  uploadId: 981054

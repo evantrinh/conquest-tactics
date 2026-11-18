@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: cdbe91a91060b1e4eb4bd0b52d578091
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 67948
+  packageName: Toon RTS Units
+  packageVersion: 1.4
+  assetPath: Assets/Toon_RTS/WesternKingdoms/prefabs/WK_Worker_A.prefab
+  uploadId: 981054
