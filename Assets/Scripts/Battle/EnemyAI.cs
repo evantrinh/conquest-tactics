@@ -5,7 +5,7 @@ using UnityEngine;
 public static class EnemyAI
 {
     const int FarAway = 999;
-    const int KillValue = 100;
+    const int KillValue = 1000;
 
     public struct Plan
     {

@@ -68,7 +68,7 @@ public static class Skills
     public static int Amount(IGrid grid, Unit caster, Vector2Int from, SkillData skill, Unit target)
     {
         int amount = skill.amount + Mathf.RoundToInt(UnitStats.Attack(caster) * skill.attackScale);
-        if (skill.effect == SkillEffect.Damage) amount += Combat.HeightBonus(grid, from, target.gridPos);
+        if (skill.effect == SkillEffect.Damage) amount += Combat.HeightBonus(grid, from, target.gridPos, amount);
         return Mathf.Max(0, amount);
     }
 
