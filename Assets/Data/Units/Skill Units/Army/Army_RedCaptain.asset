@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: RedRanger
+  m_Name: Army_RedCaptain
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Red Ranger
-  maxHP: 7
+  displayName: Red Captain
+  maxHP: 10
   attack: 3
   moveRange: 3
-  attackRange: 2
-  attackPattern: {fileID: 11400000, guid: 51283870e0520ea45b92b3f1cfa66326, type: 2}
-  skill: {fileID: 11400000, guid: 8aa1dfb19f01e124ca6ccdc298a1676e, type: 2}
-  modelPrefab: {fileID: 8937194085159135016, guid: c6f422f907971e745990856271b64c93, type: 3}
+  attackRange: 1
+  attackPattern: {fileID: 0}
+  skill: {fileID: 11400000, guid: 467b4d8f15e02b34cbbec3ea3ae83d29, type: 2}
+  modelPrefab: {fileID: 4372106158951126838, guid: 2243d9fb894b3fc4aa09b400df1e4a40, type: 3}

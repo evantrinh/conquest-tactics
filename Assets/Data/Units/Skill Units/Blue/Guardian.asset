@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: Captain
+  m_Name: Guardian
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Captain
-  maxHP: 12
-  attack: 3
+  displayName: Guardian
+  maxHP: 240
+  attack: 45
   moveRange: 3
   attackRange: 1
   attackPattern: {fileID: 0}
-  skill: {fileID: 11400000, guid: 5e29c4bfef3b85849b17b50cdd949ed4, type: 2}
-  modelPrefab: {fileID: 697338892571423141, guid: 2d2768b66f803ad4585eaee2c71d54b1, type: 3}
+  skill: {fileID: 11400000, guid: a8bb6d86b4aa2c94b9935edd62962f8e, type: 2}
+  modelPrefab: {fileID: 1137340246058539085, guid: 1a022ca3e54eae6418cb98811e635fdb, type: 3}

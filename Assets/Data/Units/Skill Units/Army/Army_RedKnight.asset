@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: Marksman
+  m_Name: Army_RedKnight
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Marksman
-  maxHP: 8
-  attack: 3
+  displayName: Red Knight
+  maxHP: 14
+  attack: 4
   moveRange: 3
-  attackRange: 2
-  attackPattern: {fileID: 11400000, guid: 51283870e0520ea45b92b3f1cfa66326, type: 2}
-  skill: {fileID: 11400000, guid: 8aa1dfb19f01e124ca6ccdc298a1676e, type: 2}
-  modelPrefab: {fileID: 6600739422966425525, guid: 9e2eed66451faec418c76e092acfee92, type: 3}
+  attackRange: 1
+  attackPattern: {fileID: 0}
+  skill: {fileID: 11400000, guid: a8bb6d86b4aa2c94b9935edd62962f8e, type: 2}
+  modelPrefab: {fileID: 6602945468723956455, guid: d1a76f762d4fff14f87df74d32efd037, type: 3}

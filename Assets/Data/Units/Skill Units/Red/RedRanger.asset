@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: Cleric
+  m_Name: RedRanger
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Cleric
-  maxHP: 10
-  attack: 2
+  displayName: Red Ranger
+  maxHP: 110
+  attack: 50
   moveRange: 3
-  attackRange: 1
-  attackPattern: {fileID: 0}
-  skill: {fileID: 11400000, guid: 467b4d8f15e02b34cbbec3ea3ae83d29, type: 2}
-  modelPrefab: {fileID: 8676149469756377225, guid: b8700dace9261af4ea2e1c1f3e3a91f1, type: 3}
+  attackRange: 2
+  attackPattern: {fileID: 11400000, guid: 51283870e0520ea45b92b3f1cfa66326, type: 2}
+  skill: {fileID: 11400000, guid: 8aa1dfb19f01e124ca6ccdc298a1676e, type: 2}
+  modelPrefab: {fileID: 8937194085159135016, guid: c6f422f907971e745990856271b64c93, type: 3}

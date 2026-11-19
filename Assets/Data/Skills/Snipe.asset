@@ -21,6 +21,6 @@ MonoBehaviour:
   actionCost: 1
   castRange: {fileID: 11400000, guid: 9189a975711dd5d4096a8e467969e890, type: 2}
   area: {fileID: 11400000, guid: c247e27b2d4a4a14eb85ffc2a708e7fd, type: 2}
-  amount: 2
+  amount: 20
   attackScale: 1.5
   effectColor: {r: 0.85, g: 0.95, b: 1, a: 1}

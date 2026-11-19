@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: RedCatapult
+  m_Name: Army_FieldMedic
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Red Catapult
-  maxHP: 8
+  displayName: Field Medic
+  maxHP: 10
   attack: 2
-  moveRange: 2
+  moveRange: 3
   attackRange: 1
   attackPattern: {fileID: 0}
-  skill: {fileID: 11400000, guid: 276e447c604594441ae4a61c688422a2, type: 2}
-  modelPrefab: {fileID: 8233792383913412468, guid: a88a4eddccaae1043a51329663798c0a, type: 3}
+  skill: {fileID: 11400000, guid: 467b4d8f15e02b34cbbec3ea3ae83d29, type: 2}
+  modelPrefab: {fileID: 6600739422966425525, guid: 9e2eed66451faec418c76e092acfee92, type: 3}

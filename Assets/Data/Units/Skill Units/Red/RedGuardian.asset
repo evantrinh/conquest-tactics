@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: RedPyromancer
+  m_Name: RedGuardian
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Red Pyromancer
-  maxHP: 7
-  attack: 2
+  displayName: Red Guardian
+  maxHP: 220
+  attack: 42
   moveRange: 3
   attackRange: 1
   attackPattern: {fileID: 0}
-  skill: {fileID: 11400000, guid: 276e447c604594441ae4a61c688422a2, type: 2}
-  modelPrefab: {fileID: 4372106158951126838, guid: 2243d9fb894b3fc4aa09b400df1e4a40, type: 3}
+  skill: {fileID: 11400000, guid: a8bb6d86b4aa2c94b9935edd62962f8e, type: 2}
+  modelPrefab: {fileID: 4181782949725422952, guid: 5d69e27a33c769545b2b4bcc87a51ce8, type: 3}

@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a522c5e1141c1144f8bbb93d596bba29, type: 3}
-  m_Name: Knight
+  m_Name: RedHealer
   m_EditorClassIdentifier: Assembly-CSharp::UnitData
-  displayName: Knight
-  maxHP: 16
-  attack: 4
-  moveRange: 3
+  displayName: Red Healer
+  maxHP: 180
+  attack: 38
+  moveRange: 4
   attackRange: 1
   attackPattern: {fileID: 0}
-  skill: {fileID: 11400000, guid: a8bb6d86b4aa2c94b9935edd62962f8e, type: 2}
-  modelPrefab: {fileID: 6588693489270358354, guid: 17d9bd0a63ee3754ca15040f65c5fdc1, type: 3}
+  skill: {fileID: 11400000, guid: 467b4d8f15e02b34cbbec3ea3ae83d29, type: 2}
+  modelPrefab: {fileID: 2571985269012701466, guid: fcc2d56248dd28f4190a06af476322c2, type: 3}
