@@ -1,0 +1,24 @@
+.menu-root {
+    flex-grow: 1;
+    align-items: center;
+    padding-top: 100px;
+}
+
+.menu-root .unity-label {
+    color: var(--c-text);
+}
+
+.menu-title {
+    font-size: 30px;
+    -unity-font-style: bold;
+    margin-bottom: 16px;
+}
+
+.menu-page {
+    width: 380px;
+}
+
+.menu-page .unity-button {
+    height: 40px;
+    margin-bottom: 6px;
+}

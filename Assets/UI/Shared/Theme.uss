@@ -1,0 +1,13 @@
+:root {
+    --c-panel: rgb(30, 30, 30);
+    --c-text: rgb(255, 255, 255);
+    --c-muted: rgb(160, 160, 160);
+    --c-track: rgb(70, 70, 70);
+    --c-fill: rgb(120, 200, 120);
+    --c-ready: rgb(240, 190, 60);
+    --c-accent: rgb(60, 130, 245);
+}
+
+.hidden {
+    display: none;
+}

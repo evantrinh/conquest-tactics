@@ -1,0 +1,33 @@
+.unit-chip {
+    width: 60px;
+    padding: 6px;
+    margin-right: 8px;
+    background-color: var(--c-panel);
+    border-width: 2px;
+    border-color: var(--c-panel);
+}
+
+.unit-chip--selected {
+    border-color: var(--c-accent);
+}
+
+.unit-chip__portrait {
+    height: 32px;
+    margin-bottom: 6px;
+    background-color: var(--c-track);
+    color: var(--c-text);
+    -unity-text-align: middle-center;
+}
+
+.unit-chip .hp-bar__text {
+    display: none;
+}
+
+.unit-chip__dot {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--c-ready);
+}

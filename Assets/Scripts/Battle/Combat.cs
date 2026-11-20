@@ -4,8 +4,9 @@ using UnityEngine;
 // Attack rules. Range and damage each live in one function.
 public static class Combat
 {
-    public const int BonusPerLevel = 1;
-    public const int MaxHeightBonus = 2;
+    // Higher ground adds a share of the damage, so it keeps its weight at any stat scale
+    public const float BonusPerLevel = 0.1f;
+    public const float MaxHeightBonus = 0.2f;
 
     // Tiles the unit can hit from where it stands
     public static List<Vector2Int> AttackTiles(IGrid grid, Unit unit) =>
@@ -31,9 +32,14 @@ public static class Combat
 
     public static int Damage(IGrid grid, Unit attacker, Vector2Int from, Unit target)
     {
-        int diff = grid.GetHeight(from) - grid.GetHeight(target.gridPos);
-        int bonus = Mathf.Clamp(diff * BonusPerLevel, 0, MaxHeightBonus);
-        return UnitStats.Attack(attacker) + bonus;
+        int attack = UnitStats.Attack(attacker);
+        return attack + HeightBonus(grid, from, target.gridPos, attack);
+    }
+
+    public static int HeightBonus(IGrid grid, Vector2Int from, Vector2Int to, int baseDamage)
+    {
+        int diff = grid.GetHeight(from) - grid.GetHeight(to);
+        return Mathf.CeilToInt(baseDamage * Mathf.Clamp(diff * BonusPerLevel, 0f, MaxHeightBonus));
     }
 
     public static bool HasEnemyInRange(IGrid grid, BattleManager battle, Unit unit)
@@ -55,6 +61,8 @@ public static class Combat
                 battle.OccupiedTiles(unit));
             if (reach.Count > 1) return true;
         }
+        var skill = UnitStats.Skill(unit);
+        if (skill != null && battle.CanCast(unit, skill) && Skills.HasUsefulTarget(grid, battle, unit, skill)) return true;
         return battle.CanAct(unit) && HasEnemyInRange(grid, battle, unit);
     }
 }

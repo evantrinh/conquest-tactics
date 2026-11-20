@@ -1,0 +1,34 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:c="ContourUI">
+    <ui:Style src="../Shared/Theme.uss" />
+    <ui:Style src="../Widgets/HpBar/HpBar.uss" />
+    <ui:Style src="../Widgets/SkillRing/SkillRing.uss" />
+    <ui:Style src="UnitCard.uss" />
+    <ui:VisualElement name="unitCard" class="unit-card">
+        <ui:VisualElement class="unit-card__header">
+            <ui:Label name="portrait" class="unit-card__portrait" />
+            <ui:VisualElement>
+                <ui:Label name="unitName" class="unit-card__name" />
+                <ui:Label name="unitSubtitle" class="unit-card__subtitle" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="unit-card__vitals">
+            <ui:VisualElement class="unit-card__hp">
+                <c:HpBar name="hpBar" />
+            </ui:VisualElement>
+            <ui:VisualElement class="unit-card__sp">
+                <c:SkillRing name="spRing" />
+                <ui:Label text="Skill points" class="unit-card__subtitle" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement class="unit-card__stats">
+            <ui:Label name="attackStat" class="unit-card__stat" />
+            <ui:Label name="moveStat" class="unit-card__stat" />
+            <ui:Label name="rangeStat" class="unit-card__stat" />
+        </ui:VisualElement>
+        <ui:Label name="statusLabel" class="unit-card__subtitle" />
+        <ui:VisualElement name="skillBlock" class="unit-card__skill">
+            <ui:Label name="skillName" class="unit-card__skill-name" />
+            <ui:Label name="skillDescription" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

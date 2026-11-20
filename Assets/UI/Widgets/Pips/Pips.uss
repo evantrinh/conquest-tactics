@@ -1,0 +1,26 @@
+.pips {
+    flex-direction: row;
+    align-items: center;
+}
+
+.pips__pip {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+    background-color: var(--c-track);
+}
+
+.pips__pip--filled {
+    background-color: var(--c-fill);
+}
+
+.pips--diamond .pips__pip {
+    width: 12px;
+    height: 12px;
+    margin-right: 12px;
+    rotate: 45deg;
+}
+
+.pips--diamond .pips__pip--filled {
+    background-color: var(--c-ready);
+}

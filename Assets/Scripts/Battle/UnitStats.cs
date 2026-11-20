@@ -8,6 +8,7 @@ public static class UnitStats
     public static int MoveRange(Unit u) => u.data.moveRange;
     public static int AttackRange(Unit u) => u.data.attackRange;
     public static int MaxHP(Unit u) => u.data.maxHP;
+    public static SkillData Skill(Unit u) => u.data.skill;
 
     public static List<Vector2Int> AttackOffsets(Unit u) =>
         u.data.attackPattern != null

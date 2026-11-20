@@ -10,6 +10,7 @@ public class TileOverlay : MonoBehaviour
     public Color moveColor = new Color(0.4f, 0.85f, 1f, 0.55f);
     public Color attackColor = new Color(1f, 0.3f, 0.3f, 0.5f);
     public Color enemyMoveColor = new Color(0.65f, 0.65f, 0.65f, 0.6f);
+    public Color skillRangeColor = new Color(0.6f, 0.4f, 1f, 0.55f);
 
     [Tooltip("Optional. Leave empty to use Unity's built-in Sprites/Default shader.")]
     public Material overlayMaterial;
@@ -18,7 +19,8 @@ public class TileOverlay : MonoBehaviour
     int used;
     Material material;
     MaterialPropertyBlock block;
-    Texture2D moveTex, enemyMoveTex, attackTex, bothTex, enemyBothTex;
+    Texture2D moveTex, enemyMoveTex, attackTex, bothTex, enemyBothTex, skillRangeTex;
+    readonly Dictionary<Color, Texture2D> areaTextures = new Dictionary<Color, Texture2D>();
 
     const int TexSize = 64;
     const int StripeWidth = 8;
@@ -33,6 +35,7 @@ public class TileOverlay : MonoBehaviour
         attackTex = Hatch(attackColor, Color.clear);
         bothTex = Hatch(moveColor, attackColor);
         enemyBothTex = Hatch(enemyMoveColor, attackColor);
+        skillRangeTex = Hatch(skillRangeColor, Color.clear);
     }
 
     // Diagonal stripes that line up across neighbouring tiles. A clear second colour leaves gaps between stripes.
@@ -69,6 +72,20 @@ public class TileOverlay : MonoBehaviour
             else tex = enemy ? enemyBothTex : bothTex;
             Add(kv.Key, tex, kv.Value == Attack ? 0.02f : 0.04f);
         }
+    }
+
+    // Skill aiming: where the centre can go, and the area around the tile under the cursor
+    public void ShowSkill(IEnumerable<Vector2Int> castTiles, IEnumerable<Vector2Int> areaTiles, Color areaColor)
+    {
+        Clear();
+        areaColor.a = 0.65f;
+        if (!areaTextures.TryGetValue(areaColor, out var areaTex))
+        {
+            areaTex = Hatch(areaColor, Color.clear);
+            areaTextures[areaColor] = areaTex;
+        }
+        foreach (var p in castTiles) Add(p, skillRangeTex, 0.02f);
+        foreach (var p in areaTiles) Add(p, areaTex, 0.04f);
     }
 
     public void Clear()

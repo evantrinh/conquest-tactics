@@ -1,0 +1,85 @@
+.unit-card {
+    position: absolute;
+    left: 16px;
+    top: 76px;
+    width: 260px;
+    padding: 12px;
+    background-color: var(--c-panel);
+    display: none;
+}
+
+.unit-card .unity-label {
+    color: var(--c-text);
+}
+
+.unit-card--shown {
+    display: flex;
+}
+
+.unit-card__header {
+    flex-direction: row;
+    align-items: center;
+}
+
+.unit-card__portrait {
+    width: 48px;
+    height: 48px;
+    margin-right: 12px;
+    background-color: var(--c-track);
+    font-size: 20px;
+    -unity-text-align: middle-center;
+}
+
+.unit-card__name {
+    font-size: 16px;
+    -unity-font-style: bold;
+}
+
+.unit-card .unit-card__subtitle {
+    color: var(--c-muted);
+    font-size: 12px;
+}
+
+.unit-card__vitals {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 12px;
+}
+
+.unit-card__hp {
+    flex-grow: 1;
+    margin-right: 12px;
+}
+
+.unit-card__sp {
+    align-items: center;
+}
+
+.unit-card .hp-bar {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.unit-card .hp-bar__text {
+    width: auto;
+    margin-left: 0;
+    margin-top: 4px;
+    -unity-text-align: middle-left;
+}
+
+.unit-card__stats {
+    flex-direction: row;
+    margin-top: 12px;
+}
+
+.unit-card__stat {
+    flex-grow: 1;
+}
+
+.unit-card__skill {
+    margin-top: 12px;
+}
+
+.unit-card__skill-name {
+    -unity-font-style: bold;
+}

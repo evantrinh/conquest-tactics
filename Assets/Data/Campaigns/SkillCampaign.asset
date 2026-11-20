@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f7e955c5b92dd439c1119a33ccc7a2, type: 3}
+  m_Name: SkillCampaign
+  m_EditorClassIdentifier: Assembly-CSharp::CampaignData
+  campaignName: Skill Test
+  description: Levels built around skills.
+  levels:
+  - {fileID: 11400000, guid: ca0a8d0727d8b1648af99b32ae5af3c5, type: 2}
+  - {fileID: 11400000, guid: b41d2f7d75c7a904d8b41adc0ac12eff, type: 2}
+  - {fileID: 11400000, guid: 24ed60930f96b5f4ca725eea685bcb98, type: 2}

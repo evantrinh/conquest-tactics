@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameCatalog
   campaigns:
   - {fileID: 11400000, guid: 937188a871f366f4ab5957f522b19be2, type: 2}
+  - {fileID: 11400000, guid: 67cdfa5b3145f88469d69eac8c398b07, type: 2}
